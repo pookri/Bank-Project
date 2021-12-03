@@ -3,10 +3,11 @@ package cs631.bank.Group3.Controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Connection;
 
 import cs631.bank.Group3.JdbcOracleConnection;
 import cs631.bank.Group3.models.Account;
+
+import java.sql.Connection;
 
 public class AccountController {
     private Connection con2=null;

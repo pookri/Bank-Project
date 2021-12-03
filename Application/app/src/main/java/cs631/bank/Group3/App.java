@@ -3,30 +3,12 @@
  */
 package cs631.bank.Group3;
 
-import java.util.List;
+import cs631.bank.Group3.Controller.TransactionTypeController;
 
-class AppParent { 
-    String getGreeting() {
-        return "Hello from parent";
-    }
-}
-
-public class App extends AppParent {
-    
-    @Override
-    String getGreeting() {
-        return "Hello World!";
-    }
-
-    public List<Integer> sort(List<Integer> str){ 
-        str.sort( (s1, s2) -> {
-            return s1 - s2;
-        } );
-        return str;
-    }
+public class App {
 
     public static void main(String[] args) {
-        AppParent parent = new App();
-        System.out.println(parent.getGreeting());
+        TransactionTypeController controller = new TransactionTypeController();
+        controller.getTransactionType();
     }
 }

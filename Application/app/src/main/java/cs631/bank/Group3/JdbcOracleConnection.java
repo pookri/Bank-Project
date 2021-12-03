@@ -2,7 +2,7 @@ package cs631.bank.Group3;
 
 import java.sql.*;
 
-public class JdbcOracleConnection{  
+public class JdbcOracleConnection implements AutoCloseable{  
    
     private static String userName = "ps245";
     private static String password = "Krupal25081998?";
@@ -35,6 +35,11 @@ public class JdbcOracleConnection{
 
     public Connection getDbConnection(){ 
         return this.dbConnection;
+    }
+
+    @Override
+    public void close() throws Exception {
+       this.dbConnection.close();
     }
 }  
 

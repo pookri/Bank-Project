@@ -2,15 +2,16 @@ package cs631.bank.Group3.Controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Connection;
 
 import cs631.bank.Group3.JdbcOracleConnection;
 import cs631.bank.Group3.models.TransactionType;
 
+import java.sql.Connection;
+
 public class TransactionTypeController {
     private Connection con1=null;
 
-    TransactionTypeController(){
+    public TransactionTypeController(){
         con1 = JdbcOracleConnection.getInstance().getDbConnection();
     }
 
@@ -19,8 +20,6 @@ public class TransactionTypeController {
     //     return INSERT_ACCOUNT;
 
     // }
-    
-    
 
    public TransactionType getTransactionType(){ 
        try{
@@ -36,24 +35,5 @@ public class TransactionTypeController {
             return null;
         }
    }
-
-
-
-
-    public static void main(String[] args) {
-
-        
-
-        // //Statement stmt=con.createStatement();  
-
-        // ResultSet rs=stmt.executeQuery("SELECT * FROM transaction_type");
-
-        // System.out.println("did I get results " + rs.next());
-        // while(rs.next()){ 
-        //     System.out.println(rs.getString(1)+"  "+rs.getString(2)+"  "+rs.getString(3) );  
-        // }
-        
-    }
-
     
 }

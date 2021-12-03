@@ -15,25 +15,8 @@ import java.util.List;
 public class AppTest {
     @Test public void appHasAGreeting() {
         App classUnderTest = new App();
-        assertNotNull("app should have a greeting", classUnderTest.getGreeting());
     }
 
     @Test public void sortList(){ 
-        App listS = new App();
-        List<Integer> ints = new ArrayList<Integer>();
-        ints.add(10);
-        ints.add(5);
-        ints.add(15);
-        ints.add(1);
-        
-        List<Integer> expected = new ArrayList<Integer>();
-        expected.add(1);
-        expected.add(5);
-        expected.add(10);
-        expected.add(15);
-
-        List<Integer> actual = listS.sort(ints);
-
-        assertArrayEquals("Testing If i sorted the list", expected.toArray() , actual.toArray());
     }
 }
