@@ -5,18 +5,7 @@ package cs631.bank.pooja;
 
 import org.junit.Test;
 
-import cs631.bank.Group3.App;
-
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class AppTest {
     @Test public void appHasAGreeting() {
-        App classUnderTest = new App();
-    }
-
-    @Test public void sortList(){ 
     }
 }
