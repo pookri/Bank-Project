@@ -174,3 +174,6 @@ DELETE FROM transaction WHERE transaction_id=?;
 --GET_ALL_TRANSACTION
 SELECT transaction_account_number,transaction_type,transaction_amount,transaction_time,transaction_date,transaction_id,transaction_balance FROM transaction WHERE transaction_account_number=?
 
+Select * from Transaction_balance ;
+
+select dbms_random.value(1,5) num from dual;
