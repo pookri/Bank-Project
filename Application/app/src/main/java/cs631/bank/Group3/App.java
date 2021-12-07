@@ -8,7 +8,14 @@ import cs631.bank.Group3.Controller.TransactionTypeController;
 public class App {
 
     public static void main(String[] args) {
-        TransactionTypeController controller = new TransactionTypeController();
-        controller.getTransactionType();
+
+        try(JdbcOracleConnection connection = JdbcOracleConnection.getInstance()){ 
+            TransactionTypeController controller = new TransactionTypeController(connection.getDbConnection());
+            controller.getTransactionType();
+        } catch(Exception e){ 
+            System.out.println(e);
+        }
+        
+
     }
 }

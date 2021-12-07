@@ -17,7 +17,11 @@ public class JdbcOracleConnection implements AutoCloseable{
     public static JdbcOracleConnection getInstance(){ 
     
         if (jdbcConnectionInstance == null){ 
-            JdbcOracleConnection.jdbcConnectionInstance = new JdbcOracleConnection();
+            // try (JdbcOracleConnection connectionTmp = new JdbcOracleConnection()) { 
+                JdbcOracleConnection.jdbcConnectionInstance = new JdbcOracleConnection();
+            // } catch(Exception e){ 
+                // System.out.println(e);
+            // }
         }
         return JdbcOracleConnection.jdbcConnectionInstance;
     }
@@ -39,7 +43,8 @@ public class JdbcOracleConnection implements AutoCloseable{
 
     @Override
     public void close() throws Exception {
-       this.dbConnection.close();
+       System.out.println("Closing Db Connection");
+        this.dbConnection.close();
     }
 }  
 
