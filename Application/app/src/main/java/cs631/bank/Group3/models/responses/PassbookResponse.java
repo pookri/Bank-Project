@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class PassbookResponse {
+    long transactionId; 
     Date date;
     String transactionCode;
     String transactionName;
@@ -15,13 +16,15 @@ public class PassbookResponse {
     double balance;
 
     public PassbookResponse(
-        Date date,
+        long transactionId,
         String transactionCode,
         String transactionName,
+        Date date,
         double debits,
         double credits,
         double balance
     ){ 
+        this.transactionId = transactionId;
         this.date = date;
     this.transactionCode = transactionCode;
     this.transactionName = transactionName;

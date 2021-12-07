@@ -1,9 +1,14 @@
 package cs631.bank.Group3;
 
+import cs631.bank.Group3.Controller.PassbookController;
 import cs631.bank.Group3.Controller.TransactionTypeController;
 import cs631.bank.Group3.models.AccountType;
 import cs631.bank.Group3.models.Loan;
+import cs631.bank.Group3.models.responses.PassbookResponse;
 import io.javalin.Javalin;
+import io.javalin.core.event.EventHandler;
+import io.javalin.core.event.EventListener;
+import io.javalin.core.event.EventManager;
 import io.javalin.plugin.openapi.OpenApiOptions;
 import io.javalin.plugin.openapi.OpenApiPlugin;
 import io.javalin.plugin.openapi.ui.ReDocOptions;
@@ -18,38 +23,38 @@ import java.util.List;
 
 public class ApiApp{ 
     public static void main(String[] args) {
+
+        JdbcOracleConnection connection = JdbcOracleConnection.getInstance();
+
+
         Javalin app = Javalin.create(config -> { 
             config.registerPlugin(getConfiguredOpenApiPlugin());
-        })
-        .start(7000);
-        
-        app.stop();
-        app.get("/test", ctx -> {
-            try(JdbcOracleConnection connection = JdbcOracleConnection.getInstance()){ 
-                TransactionTypeController controller = new TransactionTypeController(connection.getDbConnection());
-                controller.getTransactionType();
-            } catch(Exception e){ 
-                System.out.println(e);
+        }).events(
+            event -> { 
+                event.serverStopping(() -> {
+                    connection.close();
+                });
             }
-            ctx.result("Hello World");
-        }
-        );
+        )
+        .start(7000);
 
         app.get("/customerInfo", ctx -> { 
-            
+
         });
-        app.get("/actNum/{cid}", ctx -> { 
+        app.get("/accountNum/{cid}", ctx -> { 
             List<AccountType> accountTypes = new ArrayList<>();
             AccountType at = new AccountType(ctx.pathParam("cid"), "Test");
             accountTypes.add(at);
             ctx.json(accountTypes);
         });
 
-        app.get("/passbook/", ctx -> { 
-            
+        app.get("/passbook/{actNum}", ctx -> { 
+            PassbookController controller = new PassbookController(connection.getDbConnection());
+            List<PassbookResponse> result = controller.getPassbookResult(null, ctx.pathParam("actNum"));
+            ctx.json(result);
         });
 
-        app.stop();
+        // app.stop();
 
     }
 
