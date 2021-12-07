@@ -1,5 +1,6 @@
 package cs631.bank.Group3.models;
 
+
 public class Customer {
     int cssn;
     String c_firstname,c_lastname;
