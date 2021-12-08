@@ -156,7 +156,7 @@ INSERT INTO customer_account (account_number,cssn,recent_access_date) VALUES();
 --LOAN Queries
 
 --INSERT_LOAN
-INSERT INTO loan (loan_number,account_number,loan_amount,monthly_pay) VALUES();
+INSERT INTO loan (loan_number,loan_original_amount,monthly_pay,account_number,remaining_balance,loan_period,) VALUES();
 
 --OVERDRAFT Queries
 
