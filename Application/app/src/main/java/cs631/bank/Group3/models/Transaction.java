@@ -13,6 +13,13 @@ public class Transaction {
     Timestamp transaction_time;
     Date transaction_date;
 
+    public Transaction(int acountNum, String type, double amount) { 
+        this.transaction_account_number = acountNum;
+        this.transaction_type = type;
+        this.transaction_amount = amount;
+        
+    }
+
     public Transaction(int transaction_id,int transaction_account_number,String transaction_type,double transaction_amount,Timestamp transaction_time,Date transaction_date){
         this.transaction_id=transaction_id;
         this.transaction_account_number=transaction_account_number;

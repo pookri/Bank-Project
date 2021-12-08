@@ -1,9 +1,11 @@
 package cs631.bank.Group3;
 
 import cs631.bank.Group3.Controller.PassbookController;
+import cs631.bank.Group3.Controller.TransactionController;
 import cs631.bank.Group3.Controller.TransactionTypeController;
 import cs631.bank.Group3.models.AccountType;
 import cs631.bank.Group3.models.Loan;
+import cs631.bank.Group3.models.requests.TransactionReq;
 import cs631.bank.Group3.models.responses.PassbookResponse;
 import io.javalin.Javalin;
 import io.javalin.core.event.EventHandler;
@@ -52,6 +54,16 @@ public class ApiApp{
             PassbookController controller = new PassbookController(connection.getDbConnection());
             List<PassbookResponse> result = controller.getPassbookResult(null, ctx.pathParam("actNum"));
             ctx.json(result);
+        });
+
+        app.get("/accounts/{custId}", ctx -> {
+            // todo: Get all accounts of a customer write query
+        });
+
+        app.post("/transaction", ctx -> { 
+            TransactionReq req = ctx.bodyAsClass(TransactionReq.class);
+            TransactionController controller = new TransactionController(connection.getDbConnection());
+            controller.postTransaction(req);
         });
 
         // app.stop();
