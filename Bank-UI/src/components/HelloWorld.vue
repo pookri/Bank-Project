@@ -6,22 +6,11 @@
 
 <script lang="ts" setup>
 
-  import {onMounted} from 'vue';
-  name: 'HelloWorld'
-  defineProps
-  onMounted( () => {
+import {defineProps, ref} from "vue";
 
-  } )
+const props = defineProps<{
+  msg: string
+}>()
+let count = ref(0);
 
-// export default {
-//   name: 'HelloWorld',
-//   props: {
-//     msg: String
-//   },
-//   data() {
-//     return {
-//       count: 0
-//     }
-//   }
-// }
 </script>
