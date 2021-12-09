@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from 'vue'
+import { NButton } from "naive-ui";
+import { darkTheme } from 'naive-ui'
+import { NConfigProvider } from "naive-ui";
 
 defineProps({
   msg: String
@@ -26,7 +29,8 @@ const count = ref(0)
     <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Documentation</a>
   </p>
 
-  <button type="button" @click="count++">count is: {{ count }}</button>
+<!--  <n-button @click="count++">count is: {{ count }}</n-button>-->
+  <n-button type="info" @click="count++">count is: {{ count }}</n-button>
   <p>
     Edit
     <code>components/HelloWorld.vue</code> to test hot module replacement.
