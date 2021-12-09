@@ -3,10 +3,12 @@ package cs631.bank.Group3.Controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-import cs631.bank.Group3.JdbcOracleConnection;
 import cs631.bank.Group3.models.Transaction;
 import cs631.bank.Group3.models.requests.TransactionReq;
+import cs631.bank.Group3.models.responses.AccountSelectResp;
 
 import java.sql.Connection;
 
@@ -27,6 +29,23 @@ public class TransactionController {
                 System.out.println(e);
                 return null;
             }
+    }
+
+    public List<AccountSelectResp> getAllAccountsOfCustomer(String customerId){ 
+       try { 
+        
+        List<AccountSelectResp> toRet = new ArrayList<AccountSelectResp>();
+        Statement statement = this.con.createStatement();
+        ResultSet result = statement.executeQuery("select * from ");
+        while(result.next()){
+            toRet.add(new AccountSelectResp(result.getInt(1), result.getString(2), result.getString(3) ));
+        }
+        return toRet;
+       } catch (SQLException e) { 
+        System.out.println("Could not post transaction \n" );
+        e.printStackTrace();
+        return new ArrayList<>();
+       }
     }
 
     public boolean postTransaction(TransactionReq request) { 

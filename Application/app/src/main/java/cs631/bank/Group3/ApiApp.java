@@ -27,7 +27,7 @@ public class ApiApp{
     public static void main(String[] args) {
 
         JdbcOracleConnection connection = JdbcOracleConnection.getInstance();
-
+        TransactionController transactionController= new TransactionController(connection.getDbConnection());
 
         Javalin app = Javalin.create(config -> { 
             config.registerPlugin(getConfiguredOpenApiPlugin());
@@ -58,15 +58,13 @@ public class ApiApp{
 
         app.get("/accounts/{custId}", ctx -> {
             // todo: Get all accounts of a customer write query
+            transactionController.getAllAccountsOfCustomer(ctx.pathParam("custId"));
         });
 
         app.post("/transaction", ctx -> { 
             TransactionReq req = ctx.bodyAsClass(TransactionReq.class);
-            TransactionController controller = new TransactionController(connection.getDbConnection());
-            controller.postTransaction(req);
+            transactionController.postTransaction(req);
         });
-
-        // app.stop();
 
     }
 

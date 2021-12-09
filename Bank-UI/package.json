@@ -1,0 +1,17 @@
+{
+  "name": "Bank-UI",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "vue": "^3.2.13"
+  },
+  "devDependencies": {
+    "vite": "2.7.1",
+    
+    "@vue/compiler-sfc": "^3.0.4",
+    "@vitejs/plugin-vue": "^1.10.2"
+  }
+}
