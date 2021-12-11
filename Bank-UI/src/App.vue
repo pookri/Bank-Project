@@ -4,13 +4,22 @@
 import HelloWorld from './components/HelloWorld.vue'
 import { darkTheme } from 'naive-ui'
 import { NConfigProvider } from "naive-ui";
+import Transactions from "./components/Transactions.vue";
+import Passbook from "./components/Passbook.vue";
 
 
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+
+  <n-tabs type="segment">
+    <n-tab-pane name="Transaction" tab="Transaction"><transactions></transactions></n-tab-pane>
+    <n-tab-pane name="Passbook" tab="Passbook"> <passbook></passbook> </n-tab-pane>
+    <n-tab-pane name="Customer" tab="Customer">Qilixiang</n-tab-pane>
+  </n-tabs>
+
+<!--  <img alt="Vue logo" src="./assets/logo.png" />-->
+<!--  <HelloWorld msg="Hello Vue 3 + Vite" />-->
 </template>
 
 <style>
