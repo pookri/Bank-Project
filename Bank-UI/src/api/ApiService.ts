@@ -3,6 +3,9 @@ import {Axios, AxiosInstance} from "axios";
 import {RestClient} from "./RestClient";
 import {SelectOptions} from "../models/SelectOptions";
 import {backTopDark} from "naive-ui";
+import {BranchResult} from "../models/BranchResult";
+import {EmployeeResult} from "../models/EmployeeResult";
+import {Customer} from "../models/Customer";
 
 export class ApiService{
 
@@ -19,6 +22,30 @@ export class ApiService{
             ApiService.instance = new ApiService();
         }
         return ApiService.instance
+    }
+
+    public getAllBranches():Promise<BranchResult[]>{
+        return this.axios.get('branches/').then( (result) =>{
+            return result.data
+        } )
+    }
+
+    public getAllEmployees(): Promise<EmployeeResult[]>{
+        return this.axios.get('employees/').then( (result)=> {
+            return result.data
+        } )
+    }
+
+    public createEmployee(employee: EmployeeResult): Promise<boolean> {
+        return this.axios.post('employee', employee).then( (value) => {
+            return value.status === 200;
+        } )
+    }
+
+    public createCustomer(customer: Customer): Promise<boolean> {
+        return this.axios.post('customer', customer).then ( (value) => {
+            return value.status === 200;
+        } )
     }
 
     public getPassBook(accountNum: string): Promise<Passbook[]>{

@@ -6,16 +6,27 @@ import { darkTheme } from 'naive-ui'
 import { NConfigProvider } from "naive-ui";
 import Transactions from "./components/Transactions.vue";
 import Passbook from "./components/Passbook.vue";
+import CustomerCRUD from "./components/CustomerCRUD.vue";
+import Branch from "./components/Branch.vue";
+import Employee from "./components/Employee.vue";
 
 
 </script>
 
 <template>
 
+  <n-layout>
+    <n-layout-header>
+      <h2>Bank Project</h2>
+    </n-layout-header>
+  </n-layout>
+
   <n-tabs type="segment">
+    <n-tab-pane name="Branch" tab="Branch"> <Branch></Branch> </n-tab-pane>
+    <n-tab-pane name="Employee" tab="Employee"> <Employee></Employee> </n-tab-pane>
     <n-tab-pane name="Transaction" tab="Transaction"><transactions></transactions></n-tab-pane>
     <n-tab-pane name="Passbook" tab="Passbook"> <passbook></passbook> </n-tab-pane>
-    <n-tab-pane name="Customer" tab="Customer">Qilixiang</n-tab-pane>
+    <n-tab-pane name="Customer" tab="Customer"> <CustomerCRUD></CustomerCRUD> </n-tab-pane>
   </n-tabs>
 
 <!--  <img alt="Vue logo" src="./assets/logo.png" />-->
@@ -29,6 +40,6 @@ import Passbook from "./components/Passbook.vue";
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
+
 </style>

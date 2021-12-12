@@ -25,6 +25,7 @@
             @select="disableSubmit=false"
         >
         </n-auto-complete>
+        <n-date-picker :disabled="disableSubmit" v-model:value="timestamp" type="date" clearable />
         <n-button :disabled="disableSubmit" ghost type="primary" @click="submit()">Submit</n-button>
       </n-space>
     </div>
@@ -48,6 +49,7 @@ const disableSubmit = ref(true)
 const passbookResult = ref([])
 const apiService = ApiService.getInstance()
 const actNumSelected = ''
+const timestamp = ref( new Date().getTime() )
 
 const nameId = ref('')
 const branchId = ref('')
