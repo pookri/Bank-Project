@@ -3,26 +3,30 @@ package cs631.bank.Group3.Controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-import cs631.bank.Group3.JdbcOracleConnection;
 import cs631.bank.Group3.models.Branch;
+import cs631.bank.Group3.models.responses.BranchResponse;
 
 import java.sql.Connection;
 
 public class BranchController {
 
     private Connection con3=null;
-    BranchController(){
-        con3 = JdbcOracleConnection.getInstance().getDbConnection();
+    public BranchController(Connection connection){
+        con3 = connection;
     }
-    public Branch getAllbBranch(){
+    public List<BranchResponse> getAllbBranch(){
         try{
             Statement stmt = con3.createStatement();
-            ResultSet rs=stmt.executeQuery("SELECT * FROM branch");
+            // ResultSet rs=stmt.executeQuery("SELECT * FROM branch");
+            ResultSet rs = stmt.executeQuery("SELECT br.branch_id,  br.branch_name, br.city, br.assets,COUNT(e.employee_ssn) AS Num_of_Employees FROM branch br,employee e where br.branch_id=e.branch_id GROUP BY br.branch_id, br.branch_name, br.city, br.assets");
+            List<BranchResponse> branches = new ArrayList<>();
             while(rs.next()){ 
-                System.out.println(rs.getInt(1) +" "+ rs.getString(2)+" "+ rs.getString(3)+" "+rs.getDouble(4)+" "+rs.getDouble(5)+" "+rs.getDate(6) );  
+                branches.add( new BranchResponse(rs.getString(1), rs.getString(2),rs.getString(3),rs.getDouble(4),rs.getInt(5)) );
             }
-            return new Branch(rs.getString(1), rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getDouble(5),rs.getString(6),rs.getString(7),rs.getString(8), rs.getInt(9));
+            return branches;
             } catch (SQLException e) {
                 System.out.println(e);
                 return null;
