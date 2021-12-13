@@ -15,7 +15,6 @@ SELECT branch_id,COUNT(account_number)AS Number_of_accounts FROM account GROUP B
 --COUNT_No.ofAcc_BASED_ON_CREATIONDATE
 --How many accounts are created on particular date
 SELECT create_date,COUNT(account_number) FROM account WHERE create_date=;
-
 --DELETE_ACCOUNT
 DELETE FROM account WHERE account_number=;
 --UPDATE_ACCOUNT
@@ -41,7 +40,6 @@ SELECT ac.acc_type, COUNT( c.cssn) AS Num_of_customers FROM account ac,customer 
 INSERT INTO branch (branch_id,branch_name,manager_ssn,assistant_ssn,assets,address,city,state,zip_code) VALUES();
 --GET_ALL_BRANCH
 SELECT branch_id,branch_name,manager_ssn,assistant_ssn,assets,address,city,state,zip_code FROM branch;
-
 --GET_MANAGER_OF_PARTICULAR_BRANCH
 SELECT br.branch_id,br.branch_name,br.manager_ssn,e.e_firstname,e.e_lastname FROM branch br, employee e WHERE br.manager_ssn=e.employee_ssn AND br.branch_id='BARBO';
 --GET_ASSISTANT_OF_PARTICULAR_BRANCH
@@ -117,6 +115,12 @@ INSERT INTO employee (employee_ssn,branch_id,e_firstname,e_lastname,mobile_numbe
 SELECT e.e_firstname,e.e_lastname,c.c_firstname,c.c_lastname FROM employee e,customer c, assist a where c.cssn=a.cssn AND a.essn=e.employee_ssn AND e.employee_ssn= ;
 --COUNT_ASSISTED_CUSTOMERS
 SELECT e.e_firstname,e.e_lastname,COUNT(c.cssn) AS Num_AssistedCustomer FROM employee e,customer c, assist a where c.cssn=a.cssn AND a.essn=e.employee_ssn GROUP BY e.e_firstname,e.e_lastname;
+--create_view for length_of_employment
+CREATE VIEW Employee_view AS 
+SELECT employee_ssn,branch_id,e_firstname,e_lastname,mobile_number,start_date,trunc(months_between(SYSDATE(),start_date)) Employment_period 
+FROM employee;
+SELECT * FROM Employee_view;
+
 
 --TRANSACTION Queries
 
@@ -172,17 +176,21 @@ UPDATE transaction SET transaction_account_number=?,transaction_type=?,transacti
 --DELETE
 DELETE FROM transaction WHERE transaction_id=?;
 --GET_ALL_TRANSACTION
-SELECT transaction_account_number,transaction_type,transaction_amount,transaction_time,transaction_date,transaction_id,transaction_balance FROM transaction WHERE transaction_account_number=?
+SELECT transaction_account_number,transaction_type,transaction_amount,transaction_time,transaction_date,transaction_id,transaction_balance FROM transaction ORDER BY transaction_time;
 
-
+--UI Queries
 SELECT branch_id,branch_name FROM branch;
+
 SELECT employee_ssn,e_firstname,e_lastname FROM employee e where e.branch_id=
+
 SELECT c.cssn,c.c_firstname,c.c_lastname FROM customer c 
 INNER JOIN customer_account ca ON c.cssn = ca.cssn
 INNER JOIN account ac ON ac.account_number = ca.account_number
 INNER JOIN branch b ON ac.branch_id = b.branch_id 
 where b.branch_id=
+
 SELECT account_number,acc_type FROM account WHERE branch_id=;
+
 SELECT c.cssn,c.c_firstname,c.c_lastname,COUNT(ac.account_number) AS num_of_accounts,COUNT(b.branch_id) AS Num_of_branches, concat(e.e_firstname," ",e.e_lastname)AS Personal Banker
 FROM customer c
 INNER JOIN customer_account ca ON c.cssn = ca.cssn
@@ -190,8 +198,23 @@ INNER JOIN account ac ON ac.account_number = ca.account_number
 INNER JOIN branch b ON ac.branch_id = b.branch_id
 INNER JOIN assist ass ON ass.cssn=c.cssn
 INNER JOIN employee e ON e.employee_ssn=ass.essn
-GROUP BY  c.c_firstname,c.c_lastname,c.cssn,e.e_firstname,e.e_lastname
+GROUP BY  c.c_firstname,c.c_lastname,c.cssn,e.e_firstname,e.e_lastname;
 
-Select * from Transaction_balance ;
+SELECT br.branch_id,  br.branch_name, br.city, br.assets,COUNT(e.employee_ssn) AS Num_of_Employees,COUNT(a.account_number) AS Number_of_accounts,COUNT( c.cssn) AS Num_of_customers 
+FROM branch br,employee e ,customer c, customer_account ca, account ac
+where br.branch_id=e.branch_id 
+AND br.branch_id = ac.branch_id AND ac.account_number=ca.account_number AND c.cssn=ca.cssn
+GROUP BY br.branch_id, br.branch_name, br.city, br.assets;
+
+SELECT transaction_account_number,transaction_type,transaction_amount,transaction_time,transaction_date,transaction_id,transaction_balance FROM transaction ORDER BY transaction_time;
+
+CREATE VIEW Employee_view AS 
+SELECT employee_ssn,branch_id,e_firstname,e_lastname,mobile_number,start_date,trunc(months_between(SYSDATE(),start_date)) AS Employment_period,COUNT(c.cssn) AS Num_AssistedCustomer
+FROM employee e ,customer c, assist a 
+where c.cssn=a.cssn 
+AND a.essn=e.employee_ssn
+GROUP BY e.e_firstname,e.e_lastname;
+SELECT * FROM Employee_view;
+
 
 select dbms_random.value(1,5) num from dual;
