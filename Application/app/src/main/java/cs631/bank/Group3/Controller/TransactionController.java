@@ -31,7 +31,7 @@ public class TransactionController {
             }
     }
 
-    public List<AccountSelectResp> getAllAccountsOfCustomer(String customerId){ 
+    public List<AccountSelectResp> getAllAccountsOfCustomer(String customerId, String branchId){ 
        try { 
         
         List<AccountSelectResp> toRet = new ArrayList<AccountSelectResp>();

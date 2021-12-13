@@ -1,5 +1,6 @@
 package cs631.bank.Group3;
 
+import cs631.bank.Group3.Controller.BranchController;
 import cs631.bank.Group3.Controller.PassbookController;
 import cs631.bank.Group3.Controller.TransactionController;
 import cs631.bank.Group3.Controller.TransactionTypeController;
@@ -28,9 +29,10 @@ public class ApiApp{
 
         JdbcOracleConnection connection = JdbcOracleConnection.getInstance();
         TransactionController transactionController= new TransactionController(connection.getDbConnection());
-
+        BranchController branchController = new BranchController(connection.getDbConnection());
         Javalin app = Javalin.create(config -> { 
             config.registerPlugin(getConfiguredOpenApiPlugin());
+            config.enableCorsForAllOrigins();
         }).events(
             event -> { 
                 event.serverStopping(() -> {
@@ -39,6 +41,27 @@ public class ApiApp{
             }
         )
         .start(7000);
+
+        app.get("/branches", ctx -> {
+            System.out.println("called to get list of branches");
+            ctx.json(branchController.getAllbBranch());
+        } );
+
+        app.get("/employees", ctx -> {
+             
+        });
+
+        app.post("/employee", ctx -> {
+
+        });
+
+        app.post("/branch", ctx -> {
+            
+        });
+
+        app.post("/customer", ctx -> {
+            
+        });
 
         app.get("/customerInfo", ctx -> { 
 
@@ -50,15 +73,19 @@ public class ApiApp{
             ctx.json(accountTypes);
         });
 
+        app.get("/branchInfo/{custId}", ctx -> { 
+            
+        });
+
         app.get("/passbook/{actNum}", ctx -> { 
             PassbookController controller = new PassbookController(connection.getDbConnection());
             List<PassbookResponse> result = controller.getPassbookResult(null, ctx.pathParam("actNum"));
             ctx.json(result);
         });
 
-        app.get("/accounts/{custId}", ctx -> {
+        app.get("/accountsInfo/{custId}/{branchId}", ctx -> {
             // todo: Get all accounts of a customer write query
-            transactionController.getAllAccountsOfCustomer(ctx.pathParam("custId"));
+            transactionController.getAllAccountsOfCustomer(ctx.pathParam("custId"), ctx.pathParam("branchId"));
         });
 
         app.post("/transaction", ctx -> { 
