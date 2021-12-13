@@ -22,11 +22,11 @@ import Employee from "./components/Employee.vue";
   </n-layout>
 
   <n-tabs type="segment">
-    <n-tab-pane name="Branch" tab="Branch"> <Branch></Branch> </n-tab-pane>
+    <n-tab-pane name="Branch" tab="Branch"> <n-dialog-provider><Branch></Branch></n-dialog-provider> </n-tab-pane>
     <n-tab-pane name="Employee" tab="Employee"> <Employee></Employee> </n-tab-pane>
     <n-tab-pane name="Transaction" tab="Transaction"><transactions></transactions></n-tab-pane>
     <n-tab-pane name="Passbook" tab="Passbook"> <passbook></passbook> </n-tab-pane>
-    <n-tab-pane name="Customer" tab="Customer"> <CustomerCRUD></CustomerCRUD> </n-tab-pane>
+    <n-tab-pane name="Customer" tab="Customer"> <n-dialog-provider> <n-message-provider><CustomerCRUD></CustomerCRUD> </n-message-provider> </n-dialog-provider></n-tab-pane>
   </n-tabs>
 
 <!--  <img alt="Vue logo" src="./assets/logo.png" />-->

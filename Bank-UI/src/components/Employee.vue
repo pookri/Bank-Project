@@ -5,7 +5,7 @@
       <n-input v-model:value="employeeSSN" type="text" placeholder="Employee SSN"></n-input>
       <n-input v-model:value="employeeName" type="text" placeholder="Employee Name"></n-input>
       <n-input v-model:value="phoneNumber" type="text" placeholder="Employee Phone Number"></n-input>
-      <n-date-picker v-model:value="startDate" placeholder="Start Date"></n-date-picker>
+<!--      <n-date-picker v-model:value="startDate" placeholder="Start Date"></n-date-picker>-->
       <n-select v-model:value="branch" placeholder="Branch"></n-select>
       <n-button>OK</n-button>
     </n-space>

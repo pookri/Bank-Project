@@ -8,7 +8,7 @@ export class RestClient{
     private constructor() {
         this.instance = axios.create({
             baseURL: 'http://localhost:7000/',
-            timeout: 2000,
+            timeout: 30000,
             headers: {'Content-Type': 'application/json'}
         })
     }

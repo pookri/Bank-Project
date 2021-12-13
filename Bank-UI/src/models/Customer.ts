@@ -8,7 +8,8 @@ export interface Customer{
     state: string,
     zipcode: string,
     accountType: string,
-    overdraftLimit: number,
-    initialDeposit: number,
+    branch: string,
+    initialDeposit?: number,
+    loanAmount?: number
 
 }

@@ -36,8 +36,27 @@ export class ApiService{
         } )
     }
 
+    public editCustomer(customer: Customer): Promise<boolean> {
+        return this.axios.put('customer/', ).then( (result) => {
+            return result.status === 200
+        } )
+    }
+
+    public removeCustomer(custId: string): Promise<boolean>{
+        return this.axios.delete(`customer/${custId}`).then( (result) => {
+            return result.status === 200
+        } )
+    }
+
+
     public createEmployee(employee: EmployeeResult): Promise<boolean> {
         return this.axios.post('employee', employee).then( (value) => {
+            return value.status === 200;
+        } )
+    }
+
+    public createBranch(branch: {name: string, city: string}): Promise<boolean>{
+        return this.axios.post('branch', branch).then( (value) =>{
             return value.status === 200;
         } )
     }
