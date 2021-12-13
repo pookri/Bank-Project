@@ -191,14 +191,14 @@ where b.branch_id=
 
 SELECT account_number,acc_type FROM account WHERE branch_id=;
 
-SELECT c.cssn,c.c_firstname,c.c_lastname,COUNT(ac.account_number) AS num_of_accounts,COUNT(b.branch_id) AS Num_of_branches, concat(e.e_firstname," ",e.e_lastname)AS Personal Banker
+SELECT c.cssn,c.c_firstname,c.c_lastname,c.apartment_number,c.street_number,c.city,c.state,c.zip_code,COUNT(ac.account_number) AS num_of_accounts,COUNT(b.branch_id) AS Num_of_branches, concat(e.e_firstname," ",e.e_lastname)AS Personal Banker
 FROM customer c
 INNER JOIN customer_account ca ON c.cssn = ca.cssn
 INNER JOIN account ac ON ac.account_number = ca.account_number
 INNER JOIN branch b ON ac.branch_id = b.branch_id
 INNER JOIN assist ass ON ass.cssn=c.cssn
 INNER JOIN employee e ON e.employee_ssn=ass.essn
-GROUP BY  c.c_firstname,c.c_lastname,c.cssn,e.e_firstname,e.e_lastname;
+GROUP BY  c.c_firstname,c.c_lastname,c.cssn,e.e_firstname,e.e_lastname,c.apartment_number,c.street_number,c.city,c.state,c.zip_code;
 
 SELECT br.branch_id,  br.branch_name, br.city, br.assets,COUNT(e.employee_ssn) AS Num_of_Employees,COUNT(a.account_number) AS Number_of_accounts,COUNT( c.cssn) AS Num_of_customers 
 FROM branch br,employee e ,customer c, customer_account ca, account ac
@@ -216,5 +216,11 @@ AND a.essn=e.employee_ssn
 GROUP BY e.e_firstname,e.e_lastname;
 SELECT * FROM Employee_view;
 
+SELECT ac.account_number,at.acc_type,c.c_firstname,c.c_lastname
+FROM account ac, acc_type at, customer_account ca, customer c 
+where c.cssn = ca.cssn
+AND ca.account_number = ac.account_number
+AND ac.acc_type=at.acc_type
+at.acc_type ='SVNGS' AND at.acc_type ='CHKNGS';
 
 select dbms_random.value(1,5) num from dual;
