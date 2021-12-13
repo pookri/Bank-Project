@@ -177,13 +177,20 @@ SELECT transaction_account_number,transaction_type,transaction_amount,transactio
 
 SELECT branch_id,branch_name FROM branch;
 SELECT employee_ssn,e_firstname,e_lastname FROM employee e where e.branch_id=
-SELECT c.cssn,c.c_firstname,c.c_lastname FROM customer c where c.
-SELECT c.cssn,c.c_firstname,c.c_lastname,COUNT(a.account_number) AS num_of_accounts,COUNT(b.branch_id) AS Num_of_branches
+SELECT c.cssn,c.c_firstname,c.c_lastname FROM customer c 
+INNER JOIN customer_account ca ON c.cssn = ca.cssn
+INNER JOIN account ac ON ac.account_number = ca.account_number
+INNER JOIN branch b ON ac.branch_id = b.branch_id 
+where b.branch_id=
+SELECT account_number,acc_type FROM account WHERE branch_id=;
+SELECT c.cssn,c.c_firstname,c.c_lastname,COUNT(ac.account_number) AS num_of_accounts,COUNT(b.branch_id) AS Num_of_branches, concat(e.e_firstname," ",e.e_lastname)AS Personal Banker
 FROM customer c
 INNER JOIN customer_account ca ON c.cssn = ca.cssn
-INNER JOIN account a ON a.account_number = ca.account_number
-INNER JOIN branch b ON a.branch_id = b.branch_id
-GROUP BY  c.c_firstname,c.c_lastname,c.cssn
+INNER JOIN account ac ON ac.account_number = ca.account_number
+INNER JOIN branch b ON ac.branch_id = b.branch_id
+INNER JOIN assist ass ON ass.cssn=c.cssn
+INNER JOIN employee e ON e.employee_ssn=ass.essn
+GROUP BY  c.c_firstname,c.c_lastname,c.cssn,e.e_firstname,e.e_lastname
 
 Select * from Transaction_balance ;
 
