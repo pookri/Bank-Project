@@ -6,6 +6,8 @@ import {backTopDark} from "naive-ui";
 import {BranchResult} from "../models/BranchResult";
 import {EmployeeResult} from "../models/EmployeeResult";
 import {Customer} from "../models/Customer";
+import {TransactionReq, TransactionResponse} from "../models/Transaction";
+import {Accounts} from "../models/Accounts";
 
 export class ApiService{
 
@@ -92,6 +94,23 @@ export class ApiService{
         } )
     }
 
+    public postTransaction(transactionReq: TransactionReq): Promise<boolean>{
+        return this.axios.post('transaction', transactionReq).then( (result) => {
+            return result.status === 200
+        } )
+    }
+
+    public getAllTransactions(): Promise<TransactionResponse[]>{
+        return this.axios.get('transactions/').then( (result) => {
+            return result.data
+        } )
+    }
+
+    public getAccountsInfo(): Promise<Accounts[]>{
+        return this.axios.get('accounts/').then( (result) =>{
+            return result.data
+        } )
+    }
 
 
 }
