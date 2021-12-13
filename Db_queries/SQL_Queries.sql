@@ -176,9 +176,7 @@ UPDATE transaction SET transaction_account_number=?,transaction_type=?,transacti
 DELETE FROM transaction WHERE transaction_id=?;
 --GET_ALL_TRANSACTION
 SELECT transaction_account_number,transaction_type,transaction_amount,transaction_time,transaction_date,transaction_id,transaction_balance FROM transaction WHERE transaction_account_number=?
-SELECT br.branch_id, br.branch_name, br.city, br.assets from branch br 
-UNION
-SELECT COUNT(*) AS Num_of_Employees from employee e GROUP BY e.branch_id;
+
 SELECT br.branch_id,  br.branch_name, br.city, br.assets,COUNT(e.employee_ssn) AS Num_of_Employees FROM branch br,employee e where br.branch_id=e.branch_id GROUP BY br.branch_id, br.branch_name, br.city, br.assets;
 Select * from Transaction_balance ;
 
