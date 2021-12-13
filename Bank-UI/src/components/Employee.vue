@@ -9,7 +9,7 @@
       <n-select v-model:value="branch" placeholder="Branch"></n-select>
       <n-button>OK</n-button>
     </n-space>
-    <n-data-table :columns="tableColumn" :data="employees"></n-data-table>
+    <n-data-table remote :row-key="rowKey" :columns="tableColumn" :data="employees"></n-data-table>
   </n-space>
 </template>
 
@@ -24,6 +24,8 @@ const tableColumn = [
   {title: 'Phone Number', key:'phoneNumber'},
   {title: 'Start Date', key:'startDate'},
   {title: 'Branch', key:'Branch'},
+  {title: 'Employment Period (Days) ', key: 'employmentPeriod'},
+  {title: 'Customers Assisted', key: 'assistedNum'},
   {title: 'Actions', key: 'actions'}
 ]
 const employeeSSN = ref('')
@@ -39,6 +41,10 @@ const apiService = ApiService.getInstance()
 onMounted( async () =>{
   employees.value = await apiService.getAllEmployees()
 })
+
+function rowKey(rowData) {
+  return rowData.ssn
+}
 
 const createEmployee = async () => {
   const employee: EmployeeResult = {

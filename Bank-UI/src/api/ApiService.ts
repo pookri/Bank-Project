@@ -69,9 +69,9 @@ export class ApiService{
         } )
     }
 
-    public getPassBook(accountNum: string): Promise<Passbook[]>{
+    public getPassBook(accountNum: string, time: number): Promise<Passbook[]>{
 
-        return this.axios.get<Passbook[]>(`passbook/${accountNum}`).then((result) => {
+        return this.axios.get<Passbook[]>(`passbook/${accountNum}/${time}`).then((result) => {
             return result.data
         })
     }
@@ -88,8 +88,14 @@ export class ApiService{
         } );
     }
 
-    public getCustomerAccounts(customerId: string, branchId: string): Promise<string[]>{
-        return this.axios.get(`accountsInfo/${customerId}/${branchId}/` ).then( (result) =>{
+    public getCustomerAccounts(customerId: string): Promise<string[]>{
+        return this.axios.get(`accountsInfo/${customerId}/` ).then( (result) =>{
+            return result.data;
+        } )
+    }
+
+    public getListOfOwners(actId: string): Promise<string[]>{
+        return this.axios.get(`/passbook/listOfOwners/${actId}`).then( (result) => {
             return result.data;
         } )
     }
