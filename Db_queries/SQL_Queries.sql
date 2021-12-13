@@ -41,6 +41,7 @@ SELECT ac.acc_type, COUNT( c.cssn) AS Num_of_customers FROM account ac,customer 
 INSERT INTO branch (branch_id,branch_name,manager_ssn,assistant_ssn,assets,address,city,state,zip_code) VALUES();
 --GET_ALL_BRANCH
 SELECT branch_id,branch_name,manager_ssn,assistant_ssn,assets,address,city,state,zip_code FROM branch;
+
 --GET_MANAGER_OF_PARTICULAR_BRANCH
 SELECT br.branch_id,br.branch_name,br.manager_ssn,e.e_firstname,e.e_lastname FROM branch br, employee e WHERE br.manager_ssn=e.employee_ssn AND br.branch_id='BARBO';
 --GET_ASSISTANT_OF_PARTICULAR_BRANCH
@@ -101,7 +102,6 @@ INNER JOIN account a ON a.account_number = ca.account_number
 INNER JOIN  loan l ON l.account_number=a.account_number
 WHERE  c.c_firstname='Ramesh'
 AND c.c_lastname='Sharma'
-
 --UPDATE_CUSTOMER
 UPDATE customer SET cssn,c_firstname,c_lastname,apartment_number,street_number,city,state,zip_code where cssn=?;
 --GET_PERSONAL_BANKER
@@ -173,6 +173,17 @@ UPDATE transaction SET transaction_account_number=?,transaction_type=?,transacti
 DELETE FROM transaction WHERE transaction_id=?;
 --GET_ALL_TRANSACTION
 SELECT transaction_account_number,transaction_type,transaction_amount,transaction_time,transaction_date,transaction_id,transaction_balance FROM transaction WHERE transaction_account_number=?
+
+
+SELECT branch_id,branch_name FROM branch;
+SELECT employee_ssn,e_firstname,e_lastname FROM employee e where e.branch_id=
+SELECT c.cssn,c.c_firstname,c.c_lastname FROM customer c where c.
+SELECT c.cssn,c.c_firstname,c.c_lastname,COUNT(a.account_number) AS num_of_accounts,COUNT(b.branch_id) AS Num_of_branches
+FROM customer c
+INNER JOIN customer_account ca ON c.cssn = ca.cssn
+INNER JOIN account a ON a.account_number = ca.account_number
+INNER JOIN branch b ON a.branch_id = b.branch_id
+GROUP BY  c.c_firstname,c.c_lastname,c.cssn
 
 Select * from Transaction_balance ;
 
