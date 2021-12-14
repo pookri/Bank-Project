@@ -6,8 +6,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.cache.Cache;
+
 import cs631.bank.Group3.models.Branch;
 import cs631.bank.Group3.models.responses.BranchResponse;
+import cs631.bank.Group3.models.responses.SelectResult;
 
 import java.sql.Connection;
 
@@ -30,6 +33,25 @@ public class BranchController {
                 System.out.println(e);
                 return null;
             }
+    }
+
+    /**
+     * This is used to show branches in customer creatation 
+     * @return
+     */
+    public List<SelectResult> getBranchIds(){ 
+        List<SelectResult> ret = new ArrayList<>();
+
+        try(Statement stmt = con3.createStatement()){ 
+            ResultSet rs = stmt.executeQuery("SELECT b.branch_id ,b.branch_name FROM branch b");
+            while(rs.next()){ 
+                ret.add(new SelectResult(rs.getString(2),rs.getString(1)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return ret;
+        }
+        return ret;
     }
     
 }

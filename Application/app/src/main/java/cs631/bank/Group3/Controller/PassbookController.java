@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.qos.logback.classic.net.SMTPAppender;
 import cs631.bank.Group3.models.TransactionTypeEnum;
 import cs631.bank.Group3.models.responses.PassbookResponse;
 import cs631.bank.Group3.models.responses.SelectResult;
@@ -25,7 +24,18 @@ public class PassbookController {
 
     public List<PassbookResponse> getPassbookResult(String accountNum, Date sinceDate){ 
         List<PassbookResponse> listOfRows = null;
-       
+        listOfRows = new ArrayList<PassbookResponse>();
+
+        // try (Statement stmt = this.jdbcConnection.createStatement()){ 
+
+        //     ResultSet rs = stmt.executeQuery("");
+        //     if (rs.next()){ 
+        //         listOfRows.add(new PassbookResponse(398479873498L, null, "Balance Forward", sinceDate, 0, 0, rs.getDouble(1)));
+        //     }
+        // } catch(Exception e){ 
+            
+        // }
+
         try(PreparedStatement ps = this.jdbcConnection.prepareStatement("Select * from passbook_view where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time > ?")) { 
             // Statement stmt = this.jdbcConnection.createStatement();
             // PreparedStatement ps = this.jdbcConnection.prepareStatement("Select * from Transaction_balance where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time > ?");
@@ -35,7 +45,6 @@ public class PassbookController {
 
             ResultSet rs = ps.executeQuery();
 
-            listOfRows = new ArrayList<PassbookResponse>();
             while(rs.next()){
                  String t_type = rs.getString(3);
                  if (TransactionTypeEnum.valueOf(t_type).isDebit){ 

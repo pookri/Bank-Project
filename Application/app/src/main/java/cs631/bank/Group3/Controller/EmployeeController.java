@@ -9,6 +9,7 @@ import java.util.List;
 import cs631.bank.Group3.JdbcOracleConnection;
 import cs631.bank.Group3.models.Employee;
 import cs631.bank.Group3.models.responses.EmployeeResponse;
+import cs631.bank.Group3.models.responses.SelectResult;
 
 import java.sql.Connection;
 
@@ -31,6 +32,22 @@ public class EmployeeController {
                 System.out.println(e);
                 return null;
             }
+    }
+
+    public List<SelectResult> listOfAssists(String branch){ 
+        List<SelectResult> ret = new ArrayList<>();
+
+        try(Statement stmt = con5.createStatement()){ 
+            //todo: update this query to give only for branch
+            ResultSet rs = stmt.executeQuery("SELECT employee_ssn, e_firstname, e_lastname FROM employee WHERE branch_id='"+branch +"'");
+            while(rs.next()){ 
+                ret.add(new SelectResult(rs.getString(2) + " " + rs.getString(3),rs.getString(1)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return ret;
+        }
+        return ret;
     }
 
     public List<EmployeeResponse> employeeResult(){ 

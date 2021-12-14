@@ -1,13 +1,16 @@
 package cs631.bank.Group3;
 
 import cs631.bank.Group3.Controller.BranchController;
+import cs631.bank.Group3.Controller.CustomerController;
 import cs631.bank.Group3.Controller.EmployeeController;
 import cs631.bank.Group3.Controller.PassbookController;
 import cs631.bank.Group3.Controller.TransactionController;
 import cs631.bank.Group3.Controller.TransactionTypeController;
 import cs631.bank.Group3.models.AccountType;
+import cs631.bank.Group3.models.Customer;
 import cs631.bank.Group3.models.Employee;
 import cs631.bank.Group3.models.Loan;
+import cs631.bank.Group3.models.requests.CustomerReq;
 import cs631.bank.Group3.models.requests.TransactionReq;
 import cs631.bank.Group3.models.responses.PassbookResponse;
 import io.javalin.Javalin;
@@ -35,6 +38,8 @@ public class ApiApp{
         TransactionController transactionController= new TransactionController(connection.getDbConnection());
         BranchController branchController = new BranchController(connection.getDbConnection());
         PassbookController passbookController = new PassbookController(connection.getDbConnection());
+        CustomerController customerController = new CustomerController(connection.getDbConnection());
+
         Javalin app = Javalin.create(config -> { 
             config.registerPlugin(getConfiguredOpenApiPlugin());
             config.enableCorsForAllOrigins();
@@ -57,6 +62,11 @@ public class ApiApp{
             ctx.json(controller.employeeResult());
         });
 
+        app.get("/employee/assists/{branchId}", ctx -> { 
+            EmployeeController controller = new EmployeeController(connection.getDbConnection());  
+            ctx.json(controller.listOfAssists(ctx.pathParam("branchId")));
+        });
+
         app.post("/employee", ctx -> {
 
         });
@@ -65,8 +75,28 @@ public class ApiApp{
             
         });
 
+        app.delete("/customer/{custId}", ctx -> { 
+            customerController.deleteCustomer(ctx.pathParam("custId"));
+        });
+
+        app.put("/customer", ctx -> { 
+            Customer cust = ctx.bodyAsClass(Customer.class);
+            ctx.json(customerController.editCustomer(cust) );
+
+        });
+
         app.post("/customer", ctx -> {
-            
+            CustomerReq req = ctx.bodyAsClass(CustomerReq.class);
+            boolean b = customerController.addCustomer(req);
+            ctx.json(b);
+        });
+
+        app.get("/customers", ctx -> { 
+            ctx.json(customerController.getAllCustomers());
+        });
+
+        app.get("/branchIds/", ctx -> { 
+            ctx.json(branchController.getBranchIds());
         });
 
         app.get("/customerInfo", ctx -> { 
@@ -88,7 +118,7 @@ public class ApiApp{
 
         app.get("/passbook/{actNum}/{time}", ctx -> { 
             
-            Instant date = Instant.ofEpochMilli(Long.parseLong(ctx.pathParam("time")));
+            // Instant date = Instant.ofEpochMilli(Long.parseLong(ctx.pathParam("time")));
             
             List<PassbookResponse> result = passbookController.getPassbookResult(ctx.pathParam("actNum"), new java.sql.Date(Long.parseLong(ctx.pathParam("time"))));
             ctx.json(result);
