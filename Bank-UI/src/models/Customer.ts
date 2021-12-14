@@ -1,4 +1,4 @@
-export interface Customer{
+export interface CustomerInfo{
     ssn: string,
     firstName: string,
     lastName: string,
@@ -7,9 +7,14 @@ export interface Customer{
     city: string,
     state: string,
     zipcode: string,
-    accountType: string,
-    branch: string,
+}
+
+export interface CustomerReq{
+    type?: string,
+    customers: CustomerInfo[],
+    accountType?: string,
+    employeeHelping?: string,
+    branch?: string,
     initialDeposit?: number,
     loanAmount?: number
-
 }

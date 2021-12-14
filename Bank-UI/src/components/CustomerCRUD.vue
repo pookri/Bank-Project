@@ -55,9 +55,9 @@
 <script lang="ts" setup>
 
 import {h, ref} from "vue";
-import {Customer} from "../models/Customer";
 import {ApiService} from "../api/ApiService";
 import {dateZhCN, NButton, useDialog, useMessage} from "naive-ui";
+import {CustomerInfo, CustomerReq} from "../models/Customer";
 
 
 const custSSN = ref('')
@@ -84,10 +84,12 @@ const showNext = ref(false)
 
 const showLoanField = ref(false)
 
+let customerCreateReq: CustomerReq = {customers: []}
+
 const dialog = useDialog()
 const message = useMessage()
 
-const listOfCustomer: Customer[] = []
+// const listOfCustomer: Customer[] = []
 
 const typesOfAccounts = ref([
   {label: 'Single Account', value: 'Single' },
@@ -189,25 +191,39 @@ function deleteRow(row: any){
     }
   })
 }
-const customerTmp: Customer = {
-  ssn: '112',
-  firstName: 'Krupa',
-  lastName: 'suths',
-  aptNum: 'aptNum',
-  streetName: 'street nu,',
-  city: 'city',
-  state: 'NJ',
-  zipcode: '0099',
-  accountType: 'dkn',
-  branch: 'dfd',
-  initialDeposit: 8989,
-  loanAmount: 885,
-}
+// const customerTmp: Customer = {
+//   ssn: '112',
+//   firstName: 'Krupa',
+//   lastName: 'suths',
+//   aptNum: 'aptNum',
+//   streetName: 'street nu,',
+//   city: 'city',
+//   state: 'NJ',
+//   zipcode: '0099',
+//   accountType: 'dkn',
+//   branch: 'dfd',
+//   initialDeposit: 8989,
+//   loanAmount: 885,
+// }
 
-const customerData = ref([customerTmp])
+const customerData = ref([])
 
 const submit = async () =>{
-  const customer: Customer = {
+  // const customer: Customer = {
+  //   ssn: custSSN.value,
+  //   firstName: firstName.value,
+  //   lastName: lastName.value,
+  //   aptNum: aptNum.value,
+  //   streetName: streetName.value,
+  //   city: city.value,
+  //   state: state.value,
+  //   zipcode: zipcode.value,
+  //   accountType: accountType.value,
+  //   branch: branch.value,
+  //   initialDeposit: initialDeposit.value,
+  // }
+
+  const customer: CustomerInfo = {
     ssn: custSSN.value,
     firstName: firstName.value,
     lastName: lastName.value,
@@ -216,23 +232,38 @@ const submit = async () =>{
     city: city.value,
     state: state.value,
     zipcode: zipcode.value,
-    accountType: accountType.value,
-    branch: branch.value,
-    initialDeposit: initialDeposit.value,
   }
+  customerCreateReq.customers.push(customer)
+
+  // if (customerCreateReq.customers.length === 1){
+    customerCreateReq.initialDeposit = initialDeposit.value
+    customerCreateReq.loanAmount = loanAmount.value
+    customerCreateReq.branch = branch.value
+    customerCreateReq.type = typeSelected.value
+    customerCreateReq.accountType = accountType.value
+    customerCreateReq.employeeHelping = employeeAssist.value
+  // } else {
+
+  // }
+
+// todo: make the request
   if (editPressed.value){
-    await apiService.editCustomer(customer)
+    // await apiService.editCustomer(customer)
+    console.log('Customer req at edit', customerCreateReq)
   } else {
-    await apiService.createCustomer(customer)
+    // await apiService.createCustomer(customer)
+    console.log('Customer req at create', customerCreateReq)
   }
 
   editPressed.value = false
+  resetEntries()
+  resetToPrevStage()
 
   // const isCreated =  await apiService.createCustomer(customer)
 }
 
 function nextEntry() {
-  const customer: Customer = {
+  const customer: CustomerInfo = {
     ssn: custSSN.value,
     firstName: firstName.value,
     lastName: lastName.value,
@@ -241,20 +272,45 @@ function nextEntry() {
     city: city.value,
     state: state.value,
     zipcode: zipcode.value,
-    accountType: accountType.value,
-    branch: branch.value,
-    initialDeposit: initialDeposit.value,
   }
-  listOfCustomer.push(customer)
-  if (listOfCustomer.length === 4){
 
+  customerCreateReq.customers.push(customer)
+
+  if (customerCreateReq.customers.length === 1){
+    showNext.value = false
+    customerCreateReq.initialDeposit = initialDeposit.value
+    customerCreateReq.loanAmount = loanAmount.value
+    customerCreateReq.branch = branch.value
+    customerCreateReq.type = typeSelected
+    customerCreateReq.accountType = accountType
+    customerCreateReq.employeeHelping = employeeAssist.value
+    resetForNextCustomer()
   }
-  resetEntries()
+
+  // resetEntries()
 
 }
 
 function selectedAccount(value: string){
   showLoanField.value = value !== 'loan';
+}
+
+function resetForNextCustomer() {
+  custSSN.value = ''
+  firstName.value = ''
+  lastName.value = ''
+  aptNum.value = ''
+  streetName.value = ''
+  city.value = ''
+  state.value = ''
+  zipcode.value = ''
+}
+
+function resetToPrevStage(){
+  customerCreateReq = {customers: []}
+  showCustEntry.value = false
+  typeSelected.value = null
+  branch.value = null
 }
 
 function resetEntries(){
