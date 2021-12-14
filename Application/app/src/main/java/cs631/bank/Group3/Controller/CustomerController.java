@@ -120,13 +120,15 @@ public class CustomerController {
                 Customer cust = req.customers.get(0);
                 Customer cust1 = req.customers.get(1);
                 
-                stmt.executeUpdate("INSERT INTO customer(cssn,c_firstname,c_lastname,apartment_number,street_name,city,state,zip_code) "+ 
-                " VALUES("+ cust.cssn +","+ cust.cFirstname +","+ cust.cLastname +","+ cust.apartmentNumber +","+ 
-                cust.streetName +","+ cust.city +","+ cust.state +","+ cust.zipCode + ")");
+                stmt.executeUpdate("INSERT INTO customer "+ 
+            "VALUES ( "+ "'" +  cust.cssn + "'"  +","+ "'" + cust.cFirstname +"'"  +","+ "'" +cust.cLastname + "'" 
+            +","+ cust.apartmentNumber +","+ 
+            "'" + cust.streetName+ "'" +","+ "'" + cust.city + "'" +","+ "'" + cust.state + "'" +","+ cust.zipCode + ")");
 
-                stmt.executeUpdate("INSERT INTO customer(cssn,c_firstname,c_lastname,apartment_number,street_name,city,state,zip_code) "+ 
-                " VALUES("+ cust1.cssn +","+ cust1.cFirstname +","+ cust1.cLastname +","+ cust1.apartmentNumber +","+ 
-                cust1.streetName +","+ cust1.city +","+ cust1.state +","+ cust1.zipCode + ")");
+            stmt.executeUpdate("INSERT INTO customer "+ 
+            "VALUES ( "+ "'" +  cust1.cssn + "'"  +","+ "'" + cust1.cFirstname +"'"  +","+ "'" +cust1.cLastname + "'" 
+            +","+ cust1.apartmentNumber +","+ 
+            "'" + cust1.streetName+ "'" +","+ "'" + cust1.city + "'" +","+ "'" + cust1.state + "'" +","+ cust1.zipCode + ")");
 
                 long randomDigit = new java.util.Date().getTime() + new Random().nextLong();
                 String randActNum = String.valueOf(randomDigit).substring(0, 9);
@@ -136,19 +138,20 @@ public class CustomerController {
                     interestRate = 1.5;
                 }
 
-                stmt.executeUpdate("INSERT into account(account_number,branch_id,acc_type,balance,interest_rate,create_date)"+
-                "  VALUES("+ randActNum +","+ req.branch +","+ req.accountType +","+ req.initialDeposit +","+ interestRate +
-                 ","+ new Date( new java.util.Date().getTime() ) + ")");
+                stmt.executeUpdate("INSERT into account(account_number,branch_id,acc_type,balance,interest_rate,create_date,overdraft_limit)"+
+                " VALUES("+ randActNum +","+ "'" + req.branch + "'" +","+ "'"+req.accountType+"'"
+                 +","+ req.initialDeposit +","+ interestRate +
+                 ", CURRENT_TIMESTAMP ,"+ overdraftLimit +")");
                                 
-                 stmt.executeUpdate("INSERT into customer_account(account_number,cssn,recent_access_date)"+ " VALUES("+
-                 randActNum +","+ cust.cssn +","+  new Date( new java.util.Date().getTime() ) +"," + ")");
+                 stmt.executeUpdate("INSERT into customer_account (cssn,account_number,recent_access_date)"+ " VALUES("+
+                "'" +cust.cssn +"'" +"," + randActNum +"," + " CURRENT_TIMESTAMP " + ")");
 
-                 stmt.executeUpdate("INSERT into customer_account(account_number,cssn,recent_access_date)"+ " VALUES("+
-                 randActNum +","+ cust1.cssn +","+  new Date( new java.util.Date().getTime() ) +"," + ")");
+                stmt.executeUpdate("INSERT into customer_account (cssn,account_number,recent_access_date)"+ " VALUES("+
+                "'" +cust1.cssn +"'" +"," + randActNum +"," + " CURRENT_TIMESTAMP " + ")");
 
-                 stmt.executeUpdate("INSERT INTO assist VALUES(" + req.employeeHelping  + "," + cust.cssn +" )");
+                stmt.executeUpdate("INSERT INTO assist VALUES(" + "'" + req.employeeHelping + "'" + "," + "'" + cust.cssn + "'" +" )");
 
-                 stmt.executeUpdate("INSERT INTO assist VALUES(" + req.employeeHelping  + "," + cust1.cssn +" )");
+                stmt.executeUpdate("INSERT INTO assist VALUES(" + "'" + req.employeeHelping + "'" + "," + "'" + cust1.cssn + "'" +" )");
 
                 // customer two entry
                 // account - one entry 
