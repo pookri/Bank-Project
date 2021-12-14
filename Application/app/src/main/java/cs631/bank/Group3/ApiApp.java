@@ -1,5 +1,6 @@
 package cs631.bank.Group3;
 
+import cs631.bank.Group3.Controller.AccountController;
 import cs631.bank.Group3.Controller.BranchController;
 import cs631.bank.Group3.Controller.CustomerController;
 import cs631.bank.Group3.Controller.EmployeeController;
@@ -131,6 +132,12 @@ public class ApiApp{
 
         app.get("/accountsInfo/{custId}/", ctx -> {
             ctx.json(passbookController.allAccountsOfCust(ctx.pathParam("custId")));
+        });
+
+        // get values to show in accounts table
+        app.get("/accounts/", ctx -> { 
+            AccountController actCon = new AccountController(connection.getDbConnection());
+            ctx.json( actCon.getAllAccount() );
         });
 
         app.post("/transaction", ctx -> { 

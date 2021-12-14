@@ -69,15 +69,14 @@ public class CustomerController {
         try(Statement stmt = con4.createStatement()){ 
         
             stmt.executeUpdate("UPDATE from customer " + 
-            "SET c_firstname = " + customer.cFirstname + "," +
-            "c_firstname = " + customer.cFirstname + "," +  
-            "c_lastname = " + customer.cLastname + "," +  
-            "apartment_number= " + customer.apartmentNumber + "," +  
-            "street_name = " + customer.streetName + "," +  
-            "city = " + customer.city + "," +  
-            "state = " + customer.state + "," +  
-            "zip_code = " + customer.zipCode  +  
-             " where cssn = "+ customer.cssn);
+            "SET c_firstname = " + "'" + customer.cFirstname + "'" + "," +
+            "c_lastname = " + "'" + customer.cLastname + "'" + "," +  
+            "apartment_number= "  + customer.apartmentNumber + "," +  
+            "street_name = " + "'" + customer.streetName + "'" + "," +  
+            "city = " + "'" + customer.city + "'" + "," +  
+            "state = " + "'" + customer.state + "'" + "," +  
+            "zip_code = " + "'" + customer.zipCode + "'"  +  
+             " where cssn = " + "'" + customer.cssn + "'");
         }catch(SQLException e){ 
             return false;
         }

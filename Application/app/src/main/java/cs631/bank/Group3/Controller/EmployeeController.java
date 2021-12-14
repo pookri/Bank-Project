@@ -54,7 +54,7 @@ public class EmployeeController {
         List<EmployeeResponse> ret = new ArrayList<EmployeeResponse>();
         try( Statement stmt = con5.createStatement()) {
             
-            ResultSet rs = stmt.executeQuery("SELECT employee_ssn,branch_id,e_firstname,e_lastname,mobile_number,start_date,Employment_period,COUNT(DISTINCT c.cssn) AS Num_AssistedCustomer" + 
+            ResultSet rs = stmt.executeQuery("SELECT employee_ssn,branch_id,e_firstname,e_lastname,mobile_number,start_date,Employment_period,COUNT(DISTINCT c.cssn) AS Num_AssistedCustomer " + 
             "FROM Employee_view e" +  
             "LEFT OUTER JOIN  assist a ON a.essn=e.employee_ssn " +  
             "LEFT OUTER JOIN customer c ON c.cssn=a.cssn " +  

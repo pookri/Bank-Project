@@ -237,6 +237,9 @@ FROM  customer_account ca, customer c
 where c.cssn = ca.cssn
 AND ca.account_number = 8610542286; 
 
+SELECT account_number,branch_id,acc_type,balance,interest_rate,create_date,recent_access_date FROM account , customer_account ac where ca.account_number=account.account_number;
+
+
 select dbms_random.value(1,5) num from dual;
 select * from account ORDER BY create_date;
 SELECT branch_id into br_id FROM account where acc_type='SVNGS';
