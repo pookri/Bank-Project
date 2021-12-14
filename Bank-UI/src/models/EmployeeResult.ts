@@ -1,8 +1,10 @@
 export interface EmployeeResult{
-    ssn: string,
-    name: string,
-    phoneNumber: string,
-    startDate: number | Date
-    branch: string
+    employee_ssn: string,
+    fullName: string,
+    mobile_number: string,
+    start_date: number | Date
+    branch_id: string
+    employeePeriod: number
+    assistedNum: number
 }
 

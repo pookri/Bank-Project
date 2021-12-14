@@ -51,8 +51,9 @@
 
 import {onMounted, ref} from "vue";
 import {ApiService} from "../api/ApiService";
+import {create} from "naive-ui";
 
-const nameOptions = ref([{label: 'Krupal', value: 'krupal'}, {label: 'Pooja', value: 'pooja'}]);
+const nameOptions = ref([{label: 'Dhruvi', value: 'dhruvi'}, {label: 'Pooja', value: 'pooja'}]);
 const branchOptions = ref ([{label: 'Branch 1', value: 'branch1'}])
 const accountOptions = ref([]);
 const disableBranchId = ref(true)
@@ -83,8 +84,20 @@ const tableColumns = [
   },
   {title: 'Transaction Code', key: 'transactionCode'},
   {title: 'Transaction Name', key: 'transactionName'},
-  {title: 'Debits', key: 'debits'},
-  {title: 'Credits', key: 'credits'},
+  {title: 'Debits', key: 'debits', render(row): string {
+      if (row.debits === 0){
+        return '--'
+      } else {
+        return row.debits
+      }
+    } },
+  {title: 'Credits', key: 'credits', render(row): string {
+    if (row.credits === 0){
+      return '--'
+    } else {
+      return row.credits
+    }
+    }},
   {title: 'Balance', key: 'balance'}
 ]
 

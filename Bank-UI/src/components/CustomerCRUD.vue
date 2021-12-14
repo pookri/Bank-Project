@@ -171,6 +171,7 @@ function editCustomer(row){
   city.value = row.city
   state.value = row.state
   zipcode.value = row.zipCode
+  custSSN.value = row.cssn
 
 }
 

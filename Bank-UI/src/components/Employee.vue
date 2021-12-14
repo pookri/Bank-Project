@@ -19,14 +19,14 @@ import {ApiService} from "../api/ApiService";
 import {EmployeeResult} from "../models/EmployeeResult";
 
 const tableColumn = [
-  {title: 'SSN', key:'ssn'},
-  {title: 'Name', key:'name'},
-  {title: 'Phone Number', key:'phoneNumber'},
-  {title: 'Start Date', key:'startDate'},
-  {title: 'Branch', key:'Branch'},
-  {title: 'Employment Period (Days) ', key: 'employmentPeriod'},
+  {title: 'SSN', key:'employee_ssn'},
+  {title: 'Name', key:'fullName'},
+  {title: 'Phone Number', key:'mobile_number'},
+  {title: 'Start Date', key:'start_date'},
+  {title: 'Branch', key:'branch_id'},
+  {title: 'Employment Period (Days) ', key: 'employeePeriod'},
   {title: 'Customers Assisted', key: 'assistedNum'},
-  {title: 'Actions', key: 'actions'}
+  // {title: 'Actions', key: 'actions'}
 ]
 const employeeSSN = ref('')
 const employeeName = ref('')
