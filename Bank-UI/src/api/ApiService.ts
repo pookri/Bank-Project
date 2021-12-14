@@ -5,9 +5,9 @@ import {SelectOptions} from "../models/SelectOptions";
 import {backTopDark} from "naive-ui";
 import {BranchResult} from "../models/BranchResult";
 import {EmployeeResult} from "../models/EmployeeResult";
-import {Customer} from "../models/Customer";
 import {TransactionReq, TransactionResponse} from "../models/Transaction";
 import {Accounts} from "../models/Accounts";
+import {CustomerInfo, CustomerReq, CustomerTable} from "../models/Customer";
 
 export class ApiService{
 
@@ -38,8 +38,8 @@ export class ApiService{
         } )
     }
 
-    public editCustomer(customer: Customer): Promise<boolean> {
-        return this.axios.put('customer/', ).then( (result) => {
+    public editCustomer(customer: CustomerInfo): Promise<boolean> {
+        return this.axios.put('customer/', customer).then( (result) => {
             return result.status === 200
         } )
     }
@@ -52,20 +52,29 @@ export class ApiService{
 
 
     public createEmployee(employee: EmployeeResult): Promise<boolean> {
-        return this.axios.post('employee', employee).then( (value) => {
+        return this.axios.post('employee/', employee).then( (value) => {
             return value.status === 200;
         } )
     }
 
     public createBranch(branch: {name: string, city: string}): Promise<boolean>{
-        return this.axios.post('branch', branch).then( (value) =>{
+        return this.axios.post('branch/', branch).then( (value) =>{
             return value.status === 200;
         } )
     }
 
-    public createCustomer(customer: Customer): Promise<boolean> {
-        return this.axios.post('customer', customer).then ( (value) => {
+    public createCustomer(customer: CustomerReq): Promise<boolean> {
+        return this.axios.post('customer/', customer).then ( (value) => {
             return value.status === 200;
+        } )
+    }
+
+    /**
+     * This method is used to show in table
+     */
+    public getListOfCustomers(): Promise<CustomerTable[]>{
+        return this.axios.get('customers/').then( (result) => {
+            return result.data;
         } )
     }
 
@@ -86,6 +95,18 @@ export class ApiService{
         return this.axios.get(`branchInfo/${customerId}`).then( (result) => {
             return result.data;
         } );
+    }
+
+    public getAllBranchIds(): Promise<any[]>{
+        return this.axios.get(`branchIds/`).then( (result) => {
+            return result.data;
+        } )
+    }
+
+    public getEmployeeAssist(branchId: string): Promise<any[]>{
+        return this.axios.get(`/employee/assists/${branchId}`).then( (result) => {
+            return result.data;
+        } )
     }
 
     public getCustomerAccounts(customerId: string): Promise<string[]>{

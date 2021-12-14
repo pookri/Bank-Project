@@ -12,8 +12,7 @@
             ></n-select>
           </n-gi>
           <n-gi>
-            <n-select v-model:value="branch" placeholder="Branch"></n-select>
-
+            <n-select v-model:value="branch" :options="branchOptions" placeholder="Branch"></n-select>
           </n-gi>
           <n-gi>
             <n-button @click="showEntries"> OK</n-button>
@@ -41,7 +40,7 @@
 
         <n-input :disabled="showEditFields" v-show="showLoanField" v-model:value="initialDeposit" placeholder="Initial Deposit"></n-input>
         <n-input :disabled="showEditFields" v-show="!showLoanField" v-model:value="loanAmount" placeholder="Loan Amount"></n-input>
-        <n-select :disabled="showEditFields" v-model:value="employeeAssist" placeholder="Employee helping"></n-select>
+        <n-select :disabled="showEditFields" v-model:value="employeeAssist" :options="employeeOptions" placeholder="Employee helping"></n-select>
         <n-button v-show="showNext" @click="nextEntry">Next Entry</n-button>
         <n-button v-show="editPressed" @click="cancelEdit">Cancel</n-button>
         <n-button @click="submit" ghost> Submit </n-button>
@@ -54,7 +53,7 @@
 
 <script lang="ts" setup>
 
-import {h, ref} from "vue";
+import {h, onMounted, ref} from "vue";
 import {ApiService} from "../api/ApiService";
 import {dateZhCN, NButton, useDialog, useMessage} from "naive-ui";
 import {CustomerInfo, CustomerReq} from "../models/Customer";
@@ -84,6 +83,8 @@ const showNext = ref(false)
 
 const showLoanField = ref(false)
 
+const branchOptions = ref([])
+const employeeOptions = ref([])
 let customerCreateReq: CustomerReq = {customers: []}
 
 const dialog = useDialog()
@@ -97,19 +98,19 @@ const typesOfAccounts = ref([
 ])
 
 const accountTypeInfo = ref([
-  {label: 'Checking', value: 'checking'},
-  {label: 'Savings', value: 'savings'},
-  {label: 'Money Market', value: 'moneyMarket'},
-  {label: 'Loan', value: 'loan'},
+  {label: 'Checking', value: 'CKNGS'},
+  {label: 'Savings', value: 'SVNGS'},
+  {label: 'Money Market', value: 'MM'},
+  {label: 'Loan', value: 'LN'},
 ])
 
 
 const apiService = ApiService.getInstance()
 
 const tableColumn = [
-  {title: 'Customer SSN', key: 'ssn'},
-  {title: 'First Name', key: 'firstName'},
-  {title: 'Last Name', key: 'lastName'},
+  {title: 'Customer SSN', key: 'cssn'},
+  {title: 'First Name', key: 'cFirstname'},
+  {title: 'Last Name', key: 'cLastname'},
   {title: 'Number of Accounts', key: 'numOfAccounts'},
   {title: 'Number of Branches', key: 'numOfBranches'},
   {title: 'Personal Banker', key: 'personalBanker'},
@@ -141,6 +142,11 @@ const tableColumn = [
   }
 ]
 
+onMounted( async () => {
+   branchOptions.value = await apiService.getAllBranchIds();
+   customerData.value = await apiService.getListOfCustomers();
+} )
+
 function cancelEdit() {
   editPressed.value = false
   showCustEntry.value = false
@@ -153,19 +159,18 @@ function cancelEdit() {
 
 // Runs after edit is pressed on a row
 function editCustomer(row){
-  console.log('edit row', row)
   showEditFields.value = true
   showCustEntry.value = true
   editPressed.value = true
   showNext.value = false
 
-  firstName.value = row.firstName
-  lastName.value = row.lastName
-  aptNum.value = row.aptNum
+  firstName.value = row.cFirstname
+  lastName.value = row.cLastname
+  aptNum.value = row.apartmentNumber
   streetName.value = row.streetName
   city.value = row.city
   state.value = row.state
-  zipcode.value = row.zipcode
+  zipcode.value = row.zipCode
 
 }
 
@@ -178,7 +183,7 @@ function deleteRow(row: any){
     negativeText: 'No',
     onPositiveClick: async () => {
       // const isDone = true
-      const isDone = await apiService.removeCustomer(row.ssn)
+      const isDone = await apiService.removeCustomer(row.cssn)
       if (isDone){
         message.success('Customer removed successfully')
 
@@ -224,14 +229,14 @@ const submit = async () =>{
   // }
 
   const customer: CustomerInfo = {
-    ssn: custSSN.value,
-    firstName: firstName.value,
-    lastName: lastName.value,
-    aptNum: aptNum.value,
+    cssn: custSSN.value,
+    cFirstname: firstName.value,
+    cLastname: lastName.value,
+    apartmentNumber: aptNum.value,
     streetName: streetName.value,
     city: city.value,
     state: state.value,
-    zipcode: zipcode.value,
+    zipCode: zipcode.value,
   }
   customerCreateReq.customers.push(customer)
 
@@ -248,11 +253,14 @@ const submit = async () =>{
 
 // todo: make the request
   if (editPressed.value){
-    // await apiService.editCustomer(customer)
     console.log('Customer req at edit', customerCreateReq)
+    await apiService.editCustomer(customer)
   } else {
-    // await apiService.createCustomer(customer)
     console.log('Customer req at create', customerCreateReq)
+    const rep = await apiService.createCustomer(customerCreateReq)
+    if (rep){
+      customerData.value = await apiService.getListOfCustomers();
+    }
   }
 
   editPressed.value = false
@@ -264,14 +272,14 @@ const submit = async () =>{
 
 function nextEntry() {
   const customer: CustomerInfo = {
-    ssn: custSSN.value,
-    firstName: firstName.value,
-    lastName: lastName.value,
-    aptNum: aptNum.value,
+    cssn: custSSN.value,
+    cFirstname: firstName.value,
+    cLastname: lastName.value,
+    apartmentNumber: aptNum.value,
     streetName: streetName.value,
     city: city.value,
     state: state.value,
-    zipcode: zipcode.value,
+    zipCode: zipcode.value,
   }
 
   customerCreateReq.customers.push(customer)
@@ -329,9 +337,10 @@ function resetEntries(){
   employeeAssist.value = null
 }
 
-function showEntries(){
+async function showEntries(){
   showCustEntry.value = true
-  console.log('')
+  console.log('branch selected ', branch.value)
+  employeeOptions.value = await apiService.getEmployeeAssist(branch.value)
   console.log('type value from ref', typeSelected.value)
 }
 

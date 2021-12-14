@@ -1,12 +1,12 @@
 export interface CustomerInfo{
-    ssn: string,
-    firstName: string,
-    lastName: string,
-    aptNum: string,
+    cssn: string,
+    cFirstname: string,
+    cLastname: string,
+    apartmentNumber: string,
     streetName: string,
     city: string,
     state: string,
-    zipcode: string,
+    zipCode: string,
 }
 
 export interface CustomerReq{
@@ -17,4 +17,18 @@ export interface CustomerReq{
     branch?: string,
     initialDeposit?: number,
     loanAmount?: number
+}
+
+export interface CustomerTable{
+    cssn: string,
+    cFirstname:string,
+    cLastname:string,
+    apartmentNumber:string,
+    streetName:string,
+    city:string,
+    state:string,
+    zipCode:string,
+    numOfAccounts:number,
+    numOfBranches:number,
+    personalBanker:string
 }
