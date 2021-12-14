@@ -55,7 +55,7 @@ public class EmployeeController {
         try( Statement stmt = con5.createStatement()) {
             
             ResultSet rs = stmt.executeQuery("SELECT employee_ssn,branch_id,e_firstname,e_lastname,mobile_number,start_date,Employment_period,COUNT(DISTINCT c.cssn) AS Num_AssistedCustomer " + 
-            "FROM Employee_view e" +  
+            "FROM Employee_view e " +  
             "LEFT OUTER JOIN  assist a ON a.essn=e.employee_ssn " +  
             "LEFT OUTER JOIN customer c ON c.cssn=a.cssn " +  
             "GROUP BY employee_ssn,branch_id,e_firstname,e_lastname,mobile_number,start_date,Employment_period"
@@ -64,7 +64,7 @@ public class EmployeeController {
                ret.add(new EmployeeResponse(
                    rs.getString(1), 
                    rs.getString(2), 
-                   rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6), rs.getInt(7), rs.getInt(8)));
+                   rs.getString(3) +" " + rs.getString(4), rs.getString(5), rs.getDate(6), rs.getInt(7), rs.getInt(8)));
             }
         } catch (SQLException e) {
             System.out.println(e);

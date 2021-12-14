@@ -28,7 +28,7 @@ public class PassbookController {
 
         // try (Statement stmt = this.jdbcConnection.createStatement()){ 
 
-        //     ResultSet rs = stmt.executeQuery("");
+        //     ResultSet rs = stmt.executeQuery("Select balance from transaction where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + ")" );
         //     if (rs.next()){ 
         //         listOfRows.add(new PassbookResponse(398479873498L, null, "Balance Forward", sinceDate, 0, 0, rs.getDouble(1)));
         //     }
@@ -39,8 +39,9 @@ public class PassbookController {
         try(PreparedStatement ps = this.jdbcConnection.prepareStatement("Select * from passbook_view where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time > ?")) { 
             // Statement stmt = this.jdbcConnection.createStatement();
             // PreparedStatement ps = this.jdbcConnection.prepareStatement("Select * from Transaction_balance where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time > ?");
-            // ResultSet rs = stmt.executeQuery("Select * from Transaction_balance where TRANSACTION_ACCOUNT_NUMBER=?" + accountNum + 
-            // );
+            // ResultSet rs1 = stmt.executeQuery("Select balance from passbook_view where TRANSACTION_ACCOUNT_NUMBER=" + accountNum );
+
+            // stmt.close();
             ps.setDate(1, sinceDate);
 
             ResultSet rs = ps.executeQuery();

@@ -20,9 +20,9 @@ public class AccountController {
         List<Account> toRet = new ArrayList<>();
         try( Statement stmt = con2.createStatement()){
 
-            ResultSet rs=stmt.executeQuery("SELECT a.account_number, a.branch_id, a.acc_type, a.balance, a.interest_rate, a.create_date, ca.recent_access_date FROM account a, customer_account ca where ca.account_number=a.account_number");
+            ResultSet rs=stmt.executeQuery("SELECT a.account_number, a.branch_id, a.acc_type, a.balance, a.create_date, ca.recent_access_date, c.c_firstname, c.c_lastname FROM account a, customer_account ca, customer c where ca.account_number=a.account_number AND ca.cssn =c.cssn");
             while(rs.next()){ 
-                toRet.add( new Account(rs.getInt(1), rs.getString(2), rs.getString(3),rs.getDouble(4), rs.getDate(5), rs.getDate(6) ) );
+                toRet.add( new Account(rs.getString(1), rs.getString(2), rs.getString(3),rs.getDouble(4), rs.getDate(5), rs.getDate(6), rs.getString(7) + " " + rs.getString(8) ) );
                 // System.out.println(rs.getInt(1) +" "+ rs.getString(2)+" "+ rs.getString(3)+" "+rs.getDouble(4)+" "+rs.getDouble(5)+" "+rs.getDate(6) );  
             }
             // return 

@@ -9,8 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 public class EmployeeResponse {
     String employee_ssn;
     String branch_id;
-    String e_firstname;
-    String e_lastname;
+    String fullName;
     String mobile_number;
     Date start_date;
     int employeePeriod;
@@ -18,8 +17,7 @@ public class EmployeeResponse {
 
     public EmployeeResponse(String employee_ssn,
                             String branch_id,
-                            String e_firstname,
-                            String e_lastname,
+                            String fullName,
                             String mobile_number,
                             Date start_date,
                             int employeePeriod, 
@@ -27,8 +25,7 @@ public class EmployeeResponse {
                         ){
         this.employee_ssn=employee_ssn;
         this.branch_id=branch_id;
-        this.e_firstname=e_firstname;
-        this.e_lastname=e_lastname;
+        this.fullName = fullName;
         this.mobile_number=mobile_number;
         this.start_date=start_date;
         this.employeePeriod = employeePeriod;

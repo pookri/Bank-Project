@@ -143,7 +143,7 @@ INSERT INTO employee VALUES (
 INSERT INTO employee VALUES ( 
       107785469, 'ORBT','Wynne','Baez', 7694832251, '1-JAN-2020');
       
-INSERT INTO transaction VALUES(12453986,'DS',200.0,CURRENT_TIMESTAMP,SYSDATE,TRN_SC_NUM.nextval);      
+INSERT INTO transaction VALUES(163952086,'DS',200.0,CURRENT_TIMESTAMP,SYSDATE,TRN_SC_NUM.nextval);      
 commit;      
       
       

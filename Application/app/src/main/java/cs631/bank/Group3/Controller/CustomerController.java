@@ -19,6 +19,7 @@ import java.sql.Date;
 public class CustomerController {
     private Connection con4=null;
     private final int overdraftLimit = 600;
+    private final int loan_period = 3;
     
     public CustomerController(Connection connection){
         // con4 = JdbcOracleConnection.getInstance().getDbConnection();
@@ -68,7 +69,7 @@ public class CustomerController {
         
         try(Statement stmt = con4.createStatement()){ 
         
-            stmt.executeUpdate("UPDATE from customer " + 
+            stmt.executeUpdate("UPDATE customer " + 
             "SET c_firstname = " + "'" + customer.cFirstname + "'" + "," +
             "c_lastname = " + "'" + customer.cLastname + "'" + "," +  
             "apartment_number= "  + customer.apartmentNumber + "," +  
@@ -97,13 +98,45 @@ public class CustomerController {
             "'" + cust.streetName+ "'" +","+ "'" + cust.city + "'" +","+ "'" + cust.state + "'" +","+ cust.zipCode + ")");
                 // customer entry 
                 long randomDigit =  new java.util.Date().getTime();
+                
+                try { 
+                    Thread.sleep(10);
+                } catch (Exception e ){ 
+                    System.out.println("Thread sleep error" );
+                }
+                
+                long loanId = new java.util.Date().getTime();
                 String randActNum = String.valueOf(randomDigit).substring(0, 9);
                  
                 double interestRate = 0.0;
                 if (req.accountType.equals("SVNGS")){ 
                     interestRate = 1.5;
-                }
+                } 
 
+                if (req.accountType.equals("LN")){ 
+                    int loan_amount= req.initialDeposit;
+                    double monthlyPay = loan_amount / loan_period;
+
+                    ResultSet rs = stmt.executeQuery("SELECT br.assets " + " FROM branch br " + " WHERE br.branch_id = '" + req.branch +"'");
+                    rs.next();
+                    int assets = rs.getInt(1) - loan_amount ;
+
+                    stmt.executeUpdate("UPDATE branch " + 
+                        "SET assets = " + assets +
+                        " where branch_id = " + "'" + req.branch + "'");
+
+                    stmt.executeUpdate("INSERT into account(account_number,branch_id,acc_type,balance,interest_rate,create_date,overdraft_limit)"+
+                                        " VALUES("+ randActNum +","+ "'" + req.branch + "'" +","+ "'"+req.accountType+"'"
+                                        +","+ req.initialDeposit +","+ interestRate +
+                                        ", CURRENT_TIMESTAMP ,"+ overdraftLimit +")");
+                    stmt.executeUpdate("INSERT into customer_account (cssn,account_number,recent_access_date)"+ " VALUES("+
+                                        "'" +cust.cssn +"'" +"," + randActNum +"," + " CURRENT_TIMESTAMP " + ")");
+                                                        
+                stmt.executeUpdate("INSERT into loan(loan_number,loan_original_amount,monthly_pay,account_number,remaining_balance,loan_period)"+
+                " VALUES("+ loanId +"," + loan_amount +","+ monthlyPay + ","+ randActNum +","+ loan_amount  + "," + loan_period +")" );
+                stmt.executeUpdate("INSERT INTO assist VALUES(" + "'" + req.employeeHelping + "'" + "," + "'" + cust.cssn + "'" +" )");
+                }
+            else{ 
                 stmt.executeUpdate("INSERT into account(account_number,branch_id,acc_type,balance,interest_rate,create_date,overdraft_limit)"+
                  " VALUES("+ randActNum +","+ "'" + req.branch + "'" +","+ "'"+req.accountType+"'"
                   +","+ req.initialDeposit +","+ interestRate +
@@ -114,6 +147,7 @@ public class CustomerController {
                 "'" +cust.cssn +"'" +"," + randActNum +"," + " CURRENT_TIMESTAMP " + ")");
 
                 stmt.executeUpdate("INSERT INTO assist VALUES(" + "'" + req.employeeHelping + "'" + "," + "'" + cust.cssn + "'" +" )");
+            }
                 // customer_account entry 
             } else if (req.type.equals("Join")){ 
                 Customer cust = req.customers.get(0);
