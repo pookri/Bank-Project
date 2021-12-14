@@ -37,7 +37,9 @@
       </n-grid>
     </div>
     <div>
-      List of Owner(s): {{listOfOwners}}
+      List of Owner(s):
+      <n-tag v-for="owner in listOfOwners" :key="owner">{{owner}}</n-tag>
+<!--      {{listOfOwners}}-->
     </div>
     <div>
       <n-data-table remote :row-key="rowKey" :columns="tableColumns" :data="passbookResult"></n-data-table>
