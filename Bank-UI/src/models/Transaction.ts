@@ -5,8 +5,9 @@ export interface TransactionReq{
     amount: number
 }
 export interface TransactionResponse{
-    actNum: string,
+    transactionAccountNumber: string,
     transactionNum: string,
+    transactionDate
     transactionTime: Date | string,
     transactionType: string,
     transactionAmount: number

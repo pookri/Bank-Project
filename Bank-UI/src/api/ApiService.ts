@@ -118,5 +118,11 @@ export class ApiService{
         } )
     }
 
+    public getCheckingSavingsActs():Promise<any[]>{
+        return this.axios.get('getChkSvActs/').then( (result) => {
+            return result.data
+        } )
+    }
+
 
 }
