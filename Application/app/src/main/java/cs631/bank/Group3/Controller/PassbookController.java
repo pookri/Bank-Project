@@ -26,7 +26,7 @@ public class PassbookController {
     public List<PassbookResponse> getPassbookResult(String accountNum, Date sinceDate){ 
         List<PassbookResponse> listOfRows = null;
        
-        try(PreparedStatement ps = this.jdbcConnection.prepareStatement("Select * from Transaction_balance where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time > ?")) { 
+        try(PreparedStatement ps = this.jdbcConnection.prepareStatement("Select * from passbook_view where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time > ?")) { 
             // Statement stmt = this.jdbcConnection.createStatement();
             // PreparedStatement ps = this.jdbcConnection.prepareStatement("Select * from Transaction_balance where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time > ?");
             // ResultSet rs = stmt.executeQuery("Select * from Transaction_balance where TRANSACTION_ACCOUNT_NUMBER=?" + accountNum + 
@@ -54,6 +54,23 @@ public class PassbookController {
             System.out.println(e);
         }
         return listOfRows;
+    }
+
+    public List<String> getListOfOwners(String actId){ 
+      
+    List<String> ret = new ArrayList<>();
+    try (Statement stmt = this.jdbcConnection.createStatement()) {
+        ResultSet rs = stmt.executeQuery("SELECT c.c_firstname,c.c_lastname " + 
+        "FROM  customer_account ca, customer c WHERE c.cssn = ca.cssn AND ca.account_number =" + actId);
+        while(rs.next()){ 
+            String fullname = rs.getString(1) + " " + rs.getString(2);
+            ret.add(fullname);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return ret;
+    }
+    return ret;
     }
     
     // Name with Id 

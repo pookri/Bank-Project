@@ -77,6 +77,15 @@ public class ApiApp{
             
         });
 
+        app.get("/getChkSvActs/", ctx -> { 
+            ctx.json(transactionController.chkSvAccounts());
+        });
+
+        app.get("/passbook/listOfOwners/{actId}", ctx -> { 
+            String actId = ctx.pathParam("actId");
+            ctx.json(passbookController.getListOfOwners(actId));
+        });
+
         app.get("/passbook/{actNum}/{time}", ctx -> { 
             
             Instant date = Instant.ofEpochMilli(Long.parseLong(ctx.pathParam("time")));
@@ -96,7 +105,12 @@ public class ApiApp{
 
         app.post("/transaction", ctx -> { 
             TransactionReq req = ctx.bodyAsClass(TransactionReq.class);
-            transactionController.postTransaction(req);
+            Boolean b = transactionController.postTransaction(req);
+            ctx.json(b);
+        });
+
+        app.get("/transactions", ctx -> { 
+            ctx.json(transactionController.getAllTransactions());
         });
 
     }

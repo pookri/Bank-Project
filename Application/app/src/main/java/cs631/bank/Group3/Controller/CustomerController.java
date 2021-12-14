@@ -13,7 +13,7 @@ public class CustomerController {
     CustomerController(){
         con4 = JdbcOracleConnection.getInstance().getDbConnection();
     }
-    public Customer getAllbBranch(){
+    public Customer getAllCustomers(){
         try{
             Statement stmt = con4.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT * FROM customer");

@@ -232,6 +232,10 @@ LEFT OUTER JOIN  customer c ON c.cssn=ca.cssn
 GROUP BY br.branch_id,  br.branch_name, br.city, br.assets
 
 SELECT account_number,branch_id,acc_type,balance,interest_rate,create_date,status FROM account;
+SELECT c.c_firstname,c.c_lastname
+FROM  customer_account ca, customer c 
+where c.cssn = ca.cssn
+AND ca.account_number = 8610542286; 
 
 select dbms_random.value(1,5) num from dual;
 select * from account ORDER BY create_date;
