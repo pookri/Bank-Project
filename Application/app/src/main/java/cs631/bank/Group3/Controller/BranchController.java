@@ -18,8 +18,7 @@ public class BranchController {
         con3 = connection;
     }
     public List<BranchResponse> getAllbBranch(){
-        try{
-            Statement stmt = con3.createStatement();
+        try(Statement stmt = con3.createStatement()) {
             // ResultSet rs=stmt.executeQuery("SELECT * FROM branch");
             ResultSet rs = stmt.executeQuery("SELECT br.branch_id,  br.branch_name, br.city, br.assets,COUNT(e.employee_ssn) AS Num_of_Employees FROM branch br,employee e where br.branch_id=e.branch_id GROUP BY br.branch_id, br.branch_name, br.city, br.assets");
             List<BranchResponse> branches = new ArrayList<>();

@@ -1,10 +1,12 @@
 package cs631.bank.Group3;
 
 import cs631.bank.Group3.Controller.BranchController;
+import cs631.bank.Group3.Controller.EmployeeController;
 import cs631.bank.Group3.Controller.PassbookController;
 import cs631.bank.Group3.Controller.TransactionController;
 import cs631.bank.Group3.Controller.TransactionTypeController;
 import cs631.bank.Group3.models.AccountType;
+import cs631.bank.Group3.models.Employee;
 import cs631.bank.Group3.models.Loan;
 import cs631.bank.Group3.models.requests.TransactionReq;
 import cs631.bank.Group3.models.responses.PassbookResponse;
@@ -20,7 +22,9 @@ import io.swagger.v3.oas.models.info.Info;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -30,6 +34,7 @@ public class ApiApp{
         JdbcOracleConnection connection = JdbcOracleConnection.getInstance();
         TransactionController transactionController= new TransactionController(connection.getDbConnection());
         BranchController branchController = new BranchController(connection.getDbConnection());
+        PassbookController passbookController = new PassbookController(connection.getDbConnection());
         Javalin app = Javalin.create(config -> { 
             config.registerPlugin(getConfiguredOpenApiPlugin());
             config.enableCorsForAllOrigins();
@@ -43,12 +48,13 @@ public class ApiApp{
         .start(7000);
 
         app.get("/branches", ctx -> {
-            System.out.println("called to get list of branches");
             ctx.json(branchController.getAllbBranch());
         } );
 
+        // 
         app.get("/employees", ctx -> {
-             
+             EmployeeController controller = new EmployeeController(connection.getDbConnection());
+            ctx.json(controller.employeeResult());
         });
 
         app.post("/employee", ctx -> {
@@ -64,28 +70,28 @@ public class ApiApp{
         });
 
         app.get("/customerInfo", ctx -> { 
-
+            ctx.json(passbookController.customerInfo());
         });
-        app.get("/accountNum/{cid}", ctx -> { 
-            List<AccountType> accountTypes = new ArrayList<>();
-            AccountType at = new AccountType(ctx.pathParam("cid"), "Test");
-            accountTypes.add(at);
-            ctx.json(accountTypes);
-        });
-
+        
         app.get("/branchInfo/{custId}", ctx -> { 
             
         });
 
-        app.get("/passbook/{actNum}", ctx -> { 
-            PassbookController controller = new PassbookController(connection.getDbConnection());
-            List<PassbookResponse> result = controller.getPassbookResult(null, ctx.pathParam("actNum"));
+        app.get("/passbook/{actNum}/{time}", ctx -> { 
+            
+            Instant date = Instant.ofEpochMilli(Long.parseLong(ctx.pathParam("time")));
+            
+            List<PassbookResponse> result = passbookController.getPassbookResult(ctx.pathParam("actNum"), new java.sql.Date(Long.parseLong(ctx.pathParam("time"))));
             ctx.json(result);
         });
 
         app.get("/accountsInfo/{custId}/{branchId}", ctx -> {
             // todo: Get all accounts of a customer write query
             transactionController.getAllAccountsOfCustomer(ctx.pathParam("custId"), ctx.pathParam("branchId"));
+        });
+
+        app.get("/accountsInfo/{custId}/", ctx -> {
+            ctx.json(passbookController.allAccountsOfCust(ctx.pathParam("custId")));
         });
 
         app.post("/transaction", ctx -> { 

@@ -49,7 +49,7 @@ SELECT branch_id,branch_name,assets FROM branch where branch_id='BARBO';
 --GET_ASSETS_OF_ALL_BRANCH
 SELECT branch_id,branch_name,assets FROM branch ORDER BY assets;
 --COUNT_NUM_OF_EMPLOYEES
-SELECT br.branch_id, COUNT(e.employee_ssn) AS Num_of_Employees FROM branch br,employee e where br.branch_id=e.branch_id GROUP BY br.branch_id;
+SELECT br.branch_id,COUNT(e.employee_ssn) AS Num_of_Employees FROM branch br,employee e where br.branch_id=e.branch_id GROUP BY br.branch_id;
 --COUNT_NUM_OF_ACCOUNTS
 SELECT br.branch_id,COUNT(a.account_number)AS Number_of_accounts FROM branch br, account a where br.branch_id=a.branch_id  GROUP BY br.branch_id ;
 --COUNT_NUM_OF_CUSTOMERS_IN_PARTICULAR_BRANCH
@@ -63,6 +63,7 @@ SELECT br.branch_id,br.branch_name,COUNT(c.cssn) AS Num_of_customers FROM branch
 INSERT (cssn,c_firstname,c_lastname,apartment_number,street_number,city,state,zip_code) INTO customer VALUES();
 --GET_ACC_INFO_OF__CUSTOMER
 SELECT c.cssn,c.c_firstname,c.c_lastname,ac.account_number,ac.branch_id,ac.acc_type,ac.balance,ac.interest_rate,ac.create_date,ca.recent_access_date FROM account ac,customer c, customer_account ca WHERE ac.account_number=ca.account_number AND ca.cssn=c.cssn;
+SELECT ac.account_number,ac.acc_type FROM account ac,customer c, customer_account ca WHERE ac.account_number=ca.account_number AND ca.cssn=c.cssn;
 --COUNT_NUM_OF_BRANCH_CUSTOMER_HAVING  
 --IN HOW MANY BRANCHES CUSTOMER HAVE ACCOUNTS
 SELECT c.c_firstname,c.c_lastname,COUNT(b.branch_id)
@@ -100,7 +101,6 @@ INNER JOIN account a ON a.account_number = ca.account_number
 INNER JOIN  loan l ON l.account_number=a.account_number
 WHERE  c.c_firstname='Ramesh'
 AND c.c_lastname='Sharma'
-
 --UPDATE_CUSTOMER
 UPDATE customer SET cssn,c_firstname,c_lastname,apartment_number,street_number,city,state,zip_code where cssn=?;
 --GET_PERSONAL_BANKER
@@ -117,13 +117,10 @@ SELECT e.e_firstname,e.e_lastname,c.c_firstname,c.c_lastname FROM employee e,cus
 --COUNT_ASSISTED_CUSTOMERS
 SELECT e.e_firstname,e.e_lastname,COUNT(c.cssn) AS Num_AssistedCustomer FROM employee e,customer c, assist a where c.cssn=a.cssn AND a.essn=e.employee_ssn GROUP BY e.e_firstname,e.e_lastname;
 --create_view for length_of_employment
-CREATE VIEW Employee_view AS
-SELECT employee_ssn,branch_id,e_firstname,e_lastname,mobile_number,start_date,trunc(months_between(SYSDATE(),start_date)) Employment_period
+CREATE VIEW Employee_view AS 
+SELECT employee_ssn,branch_id,e_firstname,e_lastname,mobile_number,start_date,trunc(months_between(SYSDATE(),start_date)) Employment_period 
 FROM employee;
 SELECT * FROM Employee_view;
-
---GET_BRANCH_NAME_OF_PARTICULAR_EMPLOYEE
-SELECT e.e_firstname,e.e_lastname,e.employee_ssn,e.mobile_number,e.start_date,br.branch_name from employee e, branch br where br.branch_id=e.branch_id;
 
 
 --TRANSACTION Queries
@@ -185,14 +182,12 @@ SELECT transaction_account_number,transaction_type,transaction_amount,transactio
 --UI Queries
 SELECT branch_id,branch_name FROM branch;
 
-SELECT br.branch_id,  br.branch_name, br.city, br.assets,COUNT(e.employee_ssn) AS Num_of_Employees FROM branch br,employee e where br.branch_id=e.branch_id GROUP BY br.branch_id, br.branch_name, br.city, br.assets;
-Select * from Transaction_balance ;
 SELECT employee_ssn,e_firstname,e_lastname FROM employee e where e.branch_id=
 
-SELECT c.cssn,c.c_firstname,c.c_lastname FROM customer c
+SELECT c.cssn,c.c_firstname,c.c_lastname FROM customer c 
 INNER JOIN customer_account ca ON c.cssn = ca.cssn
 INNER JOIN account ac ON ac.account_number = ca.account_number
-INNER JOIN branch b ON ac.branch_id = b.branch_id
+INNER JOIN branch b ON ac.branch_id = b.branch_id 
 --where b.branch_id=
 
 SELECT account_number,acc_type FROM account WHERE branch_id=;
@@ -206,23 +201,23 @@ LEFT OUTER JOIN assist ass ON ass.cssn=c.cssn
 LEFT OUTER JOIN employee e ON e.employee_ssn=ass.essn
 GROUP BY c.cssn,c.c_firstname,c.c_lastname,c.apartment_number,c.street_name,c.city,c.state,c.zip_code,e.e_firstname,e.e_lastname;
 
-SELECT transaction_account_number,transaction_type,transaction_amount,transaction_time,transaction_date,transaction_id FROM transaction ORDER BY transaction_time DESC;
+SELECT transaction_account_number,transaction_type,transaction_amount,transaction_time,transaction_date,transaction_id FROM transaction where transaction_account_number=8012965589 ORDER BY transaction_time DESC;
 
 SELECT employee_ssn,branch_id,e_firstname,e_lastname,mobile_number,start_date,Employment_period,COUNT(DISTINCT c.cssn) AS Num_AssistedCustomer
-FROM Employee_view e
+FROM Employee_view e 
 LEFT OUTER JOIN  assist a ON a.essn=e.employee_ssn
 LEFT OUTER JOIN customer c ON c.cssn=a.cssn
 GROUP BY employee_ssn,branch_id,e_firstname,e_lastname,mobile_number,start_date,Employment_period;
 
 SELECT ac.account_number,at.account_type,c.c_firstname,c.c_lastname
-FROM account ac, account_type at, customer_account ca, customer c
+FROM account ac, account_type at, customer_account ca, customer c 
 where c.cssn = ca.cssn
 AND ca.account_number = ac.account_number
 AND ac.acc_type=at.account_type
 AND at.account_type ='SVNGS'
 UNION
 SELECT ac.account_number,at.account_type,c.c_firstname,c.c_lastname
-FROM account ac, account_type at, customer_account ca, customer c
+FROM account ac, account_type at, customer_account ca, customer c 
 where c.cssn = ca.cssn
 AND ca.account_number = ac.account_number
 AND ac.acc_type=at.account_type
@@ -239,8 +234,9 @@ GROUP BY br.branch_id,  br.branch_name, br.city, br.assets
 SELECT account_number,branch_id,acc_type,balance,interest_rate,create_date,status FROM account;
 
 select dbms_random.value(1,5) num from dual;
-
 select * from account ORDER BY create_date;
 SELECT branch_id into br_id FROM account where acc_type='SVNGS';
 select ac.interest_rate  from account ac where ac.branch_id='BARBO';
 select ac.interest_rate from account ac where ac.branch_id='BARBO' AND acc_type='SVNGS' AND ROWNUM = 1;
+
+Select * from Transaction_balance where TRANSACTION_ACCOUNT_NUMBER=8012965589
