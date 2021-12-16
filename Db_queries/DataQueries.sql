@@ -143,9 +143,11 @@ INSERT INTO employee VALUES (
 INSERT INTO employee VALUES ( 
       107785469, 'ORBT','Wynne','Baez', 7694832251, '1-JAN-2020');
       
-INSERT INTO transaction VALUES(163952086,'DS',200.0,CURRENT_TIMESTAMP,SYSDATE,TRN_SC_NUM.nextval);      
-commit;      
-      
+INSERT INTO transaction VALUES(163952696,'DS',50.0,CURRENT_TIMESTAMP+1,SYSDATE,TRN_SC_NUM.nextval);      
+commit;
+
+Select b.changed_balance from transaction t, balance_logs b where t.TRANSACTION_ACCOUNT_NUMBER=163952696 AND t.transaction_id=b.transaction_id AND ROWNUM =1;
+select changed_balance from passbook_view where TRANSACTION_ACCOUNT_NUMBER=163952696 AND ROWNUM =1;
       
 INSERT INTO employee_dependent VALUES(148653223,'Sahil');
 INSERT INTO employee_dependent VALUES(148653223,'Keyur');

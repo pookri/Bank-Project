@@ -26,15 +26,16 @@ public class PassbookController {
         List<PassbookResponse> listOfRows = null;
         listOfRows = new ArrayList<PassbookResponse>();
 
-        // try (Statement stmt = this.jdbcConnection.createStatement()){ 
-
-        //     ResultSet rs = stmt.executeQuery("Select balance from transaction where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + ")" );
-        //     if (rs.next()){ 
-        //         listOfRows.add(new PassbookResponse(398479873498L, null, "Balance Forward", sinceDate, 0, 0, rs.getDouble(1)));
-        //     }
-        // } catch(Exception e){ 
-            
-        // }
+        try (PreparedStatement ps2 = this.jdbcConnection.prepareStatement("select changed_balance from passbook_view where TRANSACTION_ACCOUNT_NUMBER= " + accountNum + " AND transaction_time <= ? AND ROWNUM =1")){ 
+            ps2.setDate(1,sinceDate);
+            ResultSet rs = ps2.executeQuery();
+            // ResultSet rs = stmt.executeQuery("Select b.changed_balance from transaction t, balance_logs b where t.TRANSACTION_ACCOUNT_NUMBER= " + 163952696 + " AND transaction_time < ? AND t.transaction_id=b.transaction_id AND ROWNUM =1" );
+            if (rs.next()){ 
+                listOfRows.add(new PassbookResponse(398479873498L, null, "Balance Forward", sinceDate, 0, 0, rs.getDouble(1)));
+            }
+        } catch(Exception e){ 
+            System.out.println("Didn't get passbook forward");
+        }
 
         try(PreparedStatement ps = this.jdbcConnection.prepareStatement("Select * from passbook_view where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time > ?")) { 
             // Statement stmt = this.jdbcConnection.createStatement();
@@ -57,6 +58,7 @@ public class PassbookController {
                         new PassbookResponse(rs.getLong(1), rs.getString(3), rs.getString(4), rs.getDate(5) , 0.0, rs.getDouble(6), rs.getDouble(7))
                     );
                  }
+                //  System.out.println("passbook " + rs.getLong(1) + rs.getString(3) + rs.getString(4) + rs.getDate(5) + 0.0 + rs.getDouble(6) + rs.getDouble(7));
                 // new PassbookResponse(rs.getString(1), transactionCode, transactionName, debits, credits, balance)
                 // return new Transaction(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getDouble(4),rs.getTimestamp(5),rs.getDate(6));
             }

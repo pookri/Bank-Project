@@ -9,13 +9,14 @@ public class App {
 
     public static void main(String[] args) {
 
-        try(JdbcOracleConnection connection = JdbcOracleConnection.getInstance()){ 
-            TransactionTypeController controller = new TransactionTypeController(connection.getDbConnection());
-            controller.getTransactionType();
-        } catch(Exception e){ 
-            System.out.println(e);
-        }
+        // try(JdbcOracleConnection connection = JdbcOracleConnection.getInstance()){ 
+        //     TransactionTypeController controller = new TransactionTypeController(connection.getDbConnection());
+        //     controller.getTransactionType();
+        // } catch(Exception e){ 
+        //     System.out.println(e);
+        // }
         
+        System.out.println("Printing args " + args[0] + " " + args[1]);
 
     }
 }

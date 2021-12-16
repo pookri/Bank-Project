@@ -13,6 +13,20 @@ public class JdbcOracleConnection implements AutoCloseable{
     private JdbcOracleConnection(){ 
         this.dbConnection = this.createConnection();
     }  
+
+    private JdbcOracleConnection(String user, String pws, String url){ 
+        userName = user;
+        password = pws;
+        dataBaseURL = url;
+        dbConnection = this.createConnection();
+    }
+
+    public static JdbcOracleConnection firstInstance(String user, String pws, String url){ 
+        if (jdbcConnectionInstance == null){ 
+            JdbcOracleConnection.jdbcConnectionInstance = new JdbcOracleConnection(user, pws, url);
+        }
+        return JdbcOracleConnection.jdbcConnectionInstance;
+    }
     
     public static JdbcOracleConnection getInstance(){ 
     

@@ -88,6 +88,7 @@ public class TransactionController {
     }
 
     public boolean postTransaction(TransactionReq request) { 
+        
         try {
             Statement statement = this.con.createStatement();
             // INSERT INTO transaction() VALUES(12453986,'WD',20.0,CURRENT_TIMESTAMP,SYSDATE,TRN_SC_NUM.nextval);      

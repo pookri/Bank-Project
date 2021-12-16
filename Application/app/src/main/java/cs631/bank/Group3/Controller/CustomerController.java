@@ -92,6 +92,9 @@ public class CustomerController {
             //     stmt.executeUpdate("INSERT INTO customer (cssn,c_firstname,c_lastname,apartment_number,street_name,city,state,zip_code) "+ 
             // "VALUES ( "+ cust.cssn +" , "+ cust.cFirstname +" , "+ cust.cLastname +" , "+ cust.apartmentNumber +" , "+ 
             // cust.streetName +" , "+ cust.city +" , "+ cust.state +" , "+ cust.zipCode + " )");
+            if (req.initialDeposit < 500){ 
+                return false;
+            }
             stmt.executeUpdate("INSERT INTO customer "+ 
             "VALUES ( "+ "'" +  cust.cssn + "'"  +","+ "'" + cust.cFirstname +"'"  +","+ "'" +cust.cLastname + "'" 
             +","+ cust.apartmentNumber +","+ 
