@@ -4,8 +4,8 @@ import java.sql.*;
 
 public class JdbcOracleConnection implements AutoCloseable{  
    
-    private static String userName = "ps245";
-    private static String password = "Krupal25081998?";
+    private static String userName = "";
+    private static String password = "";
     private static String dataBaseURL = "jdbc:oracle:thin:@prophet.njit.edu:1521:course";
     private static JdbcOracleConnection jdbcConnectionInstance;
     private Connection dbConnection;

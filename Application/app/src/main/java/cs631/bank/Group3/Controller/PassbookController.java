@@ -26,7 +26,7 @@ public class PassbookController {
         List<PassbookResponse> listOfRows = null;
         listOfRows = new ArrayList<PassbookResponse>();
 
-        try (PreparedStatement ps2 = this.jdbcConnection.prepareStatement("select changed_balance from passbook_view where TRANSACTION_ACCOUNT_NUMBER= " + accountNum + " AND transaction_time <= ? AND ROWNUM =1")){ 
+        try (PreparedStatement ps2 = this.jdbcConnection.prepareStatement("select changed_balance from passbook_view where TRANSACTION_ACCOUNT_NUMBER= " + accountNum + " AND transaction_time < ? AND ROWNUM =1 ORDER BY transaction_time DESC")){ 
             ps2.setDate(1,sinceDate);
             ResultSet rs = ps2.executeQuery();
             // ResultSet rs = stmt.executeQuery("Select b.changed_balance from transaction t, balance_logs b where t.TRANSACTION_ACCOUNT_NUMBER= " + 163952696 + " AND transaction_time < ? AND t.transaction_id=b.transaction_id AND ROWNUM =1" );
@@ -37,7 +37,7 @@ public class PassbookController {
             System.out.println("Didn't get passbook forward");
         }
 
-        try(PreparedStatement ps = this.jdbcConnection.prepareStatement("Select * from passbook_view where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time > ?")) { 
+        try(PreparedStatement ps = this.jdbcConnection.prepareStatement("select * from passbook_view where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time >= ? ORDER BY transaction_time")) { 
             // Statement stmt = this.jdbcConnection.createStatement();
             // PreparedStatement ps = this.jdbcConnection.prepareStatement("Select * from Transaction_balance where TRANSACTION_ACCOUNT_NUMBER=" + accountNum + " AND transaction_time > ?");
             // ResultSet rs1 = stmt.executeQuery("Select balance from passbook_view where TRANSACTION_ACCOUNT_NUMBER=" + accountNum );

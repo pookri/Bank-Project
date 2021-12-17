@@ -34,11 +34,11 @@ import java.util.List;
 
 public class ApiApp{ 
     public static void main(String[] args) {
-        // String userName = args[0];
-        // String pwd = args[1];
-        // String url = args[2];
-        // JdbcOracleConnection connection = JdbcOracleConnection.firstInstance(userName, pwd, url);
-        JdbcOracleConnection connection = JdbcOracleConnection.getInstance();
+        String userName = args[0];
+        String pwd = args[1];
+        String url = args[2];
+        JdbcOracleConnection connection = JdbcOracleConnection.firstInstance(userName, pwd, url);
+        // JdbcOracleConnection connection = JdbcOracleConnection.getInstance();
 
         TransactionController transactionController= new TransactionController(connection.getDbConnection());
         BranchController branchController = new BranchController(connection.getDbConnection());
