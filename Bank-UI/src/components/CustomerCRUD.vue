@@ -261,6 +261,8 @@ const submit = async () =>{
     const rep = await apiService.createCustomer(customerCreateReq)
     if (rep){
       customerData.value = await apiService.getListOfCustomers();
+    } else {
+      message.error('We did not create a customer ');
     }
   }
 

@@ -1,14 +1,14 @@
 <template>
   <n-space vertical>
-    <n-space>
-      <span>Create Employee </span>
-      <n-input v-model:value="employeeSSN" type="text" placeholder="Employee SSN"></n-input>
-      <n-input v-model:value="employeeName" type="text" placeholder="Employee Name"></n-input>
-      <n-input v-model:value="phoneNumber" type="text" placeholder="Employee Phone Number"></n-input>
-<!--      <n-date-picker v-model:value="startDate" placeholder="Start Date"></n-date-picker>-->
-      <n-select v-model:value="branch" placeholder="Branch"></n-select>
-      <n-button>OK</n-button>
-    </n-space>
+<!--    <n-space>-->
+<!--      <span>Create Employee </span>-->
+<!--      <n-input v-model:value="employeeSSN" type="text" placeholder="Employee SSN"></n-input>-->
+<!--      <n-input v-model:value="employeeName" type="text" placeholder="Employee Name"></n-input>-->
+<!--      <n-input v-model:value="phoneNumber" type="text" placeholder="Employee Phone Number"></n-input>-->
+<!--&lt;!&ndash;      <n-date-picker v-model:value="startDate" placeholder="Start Date"></n-date-picker>&ndash;&gt;-->
+<!--      <n-select v-model:value="branch" placeholder="Branch"></n-select>-->
+<!--      <n-button>OK</n-button>-->
+<!--    </n-space>-->
     <n-data-table remote :row-key="rowKey" :columns="tableColumn" :data="employees"></n-data-table>
   </n-space>
 </template>

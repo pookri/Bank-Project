@@ -10,7 +10,7 @@ import {ApiService} from "../api/ApiService";
 
 const tableColumns = [
   {title: 'Account Number',  key: 'account_number'},
-  {title: 'Full Name', key: 'fullN'},
+  {title: 'Full Name', key: 'fullName'},
   {title: 'Branch Id', key: 'branch_id'},
   {title: 'Account Type', key: 'acc_type'},
   {title: 'Account Balance', key: 'balance'},

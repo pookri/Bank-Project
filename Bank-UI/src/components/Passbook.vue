@@ -43,6 +43,7 @@
     </div>
     <div>
       <n-data-table remote :row-key="rowKey" :columns="tableColumns" :data="passbookResult"></n-data-table>
+<!--      <n-data-table remote :row-key="rowKey" :columns="tableColumns" :data="tmpResult"></n-data-table>-->
     </div>
   </n-space>
 </template>
@@ -52,6 +53,7 @@
 import {onMounted, ref} from "vue";
 import {ApiService} from "../api/ApiService";
 import {create} from "naive-ui";
+import {Passbook} from "../models/Passbook";
 
 const nameOptions = ref([{label: 'Dhruvi', value: 'dhruvi'}, {label: 'Pooja', value: 'pooja'}]);
 const branchOptions = ref ([{label: 'Branch 1', value: 'branch1'}])
@@ -75,6 +77,14 @@ onMounted( async () => {
 function rowKey(rowData){
   return rowData.transactionId;
 }
+
+const tmpResult: Passbook[] = [
+
+  {date: new Date(), transactionCode: '', transactionName: 'Balance Forward', debits: 0, credits: 0, balance: 500},
+  {date: new Date(), transactionCode: 'DS', transactionName: 'Customer Deposit', debits: 100, credits: 0, balance: 600},
+  {date: new Date(), transactionCode: 'WD', transactionName: 'Withdrawl', debits: 0, credits: 50, balance: 550},
+  {date: new Date(), transactionCode: 'DS', transactionName: 'Customer Deposit', debits: 10, credits: 0, balance: 560}
+]
 
 const tableColumns = [
   {title: 'Date', key: 'date',

@@ -1,12 +1,12 @@
 <template>
 
   <n-space vertical>
-    <n-space>
-      <span>Create Branch</span>
-      <n-input v-model:value="branchName" type="text" placeholder="Branch Name"></n-input>
-      <n-input v-model:value="branchCity" type="text" placeholder="Branch City"></n-input>
-      <n-button @click="createBranch">OK</n-button>
-    </n-space>
+<!--    <n-space>-->
+<!--      <span>Create Branch</span>-->
+<!--      <n-input v-model:value="branchName" type="text" placeholder="Branch Name"></n-input>-->
+<!--      <n-input v-model:value="branchCity" type="text" placeholder="Branch City"></n-input>-->
+<!--      <n-button @click="createBranch">OK</n-button>-->
+<!--    </n-space>-->
     <n-data-table remote :row-key="rowKey" :columns="tableColumn" :data="branchData"></n-data-table>
   </n-space>
 
@@ -21,8 +21,8 @@ const tableColumn = [
   {title: 'Name', key:'name'},
   {title: 'City', key:'city'},
   {title: 'Assets', key:'assets'},
-  {title: 'Manager', key: 'manager'},
-  {title: 'Assistant Manager', key: 'assistantManager'},
+  // {title: 'Manager', key: 'manager'},
+  // {title: 'Assistant Manager', key: 'assistantManager'},
   {title: 'Num Of Employees', key: 'numOfEmployees'},
 ]
 const branchName = ref('')
